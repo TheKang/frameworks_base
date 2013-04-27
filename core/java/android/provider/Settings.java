@@ -3936,6 +3936,12 @@ public final class Settings {
         public static final String SCREEN_ON_NOTIFICATION_LED = "screen_on_notification_led";
 
         /**
+         * NFC polling mode configuration key
+         * @hide
+         */
+        public static final String NFC_POLLING_MODE = "nfc_polling_mode";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
