@@ -713,6 +713,9 @@ public class NotificationManagerService extends SystemService {
             boolean packageChanged = false;
             boolean cancelNotifications = true;
 
+            boolean ScreenOnNotificationLed = Settings.System.getInt(getContext().getContentResolver(),
+                    Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
+
             if (action.equals(Intent.ACTION_PACKAGE_ADDED)
                     || (queryRemove=action.equals(Intent.ACTION_PACKAGE_REMOVED))
                     || action.equals(Intent.ACTION_PACKAGE_RESTARTED)
@@ -799,7 +802,7 @@ public class NotificationManagerService extends SystemService {
                     cancelAllNotificationsInt(MY_UID, MY_PID, null, 0, 0, true, userHandle,
                             REASON_USER_STOPPED, null);
                 }
-            } else if (action.equals(Intent.ACTION_USER_PRESENT)) {
+            } else if (action.equals(Intent.ACTION_USER_PRESENT) && !ScreenOnNotificationLed) {
                 // turn off LED when user passes through lock screen
                 mNotificationLight.turnOff();
                 mStatusBar.notificationLightOff();
@@ -2903,6 +2906,9 @@ public class NotificationManagerService extends SystemService {
     // lock on mNotificationList
     void updateLightsLocked()
     {
+        boolean ScreenOnNotificationLed = Settings.System.getInt(getContext().getContentResolver(),
+                Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
+
         // handle notification lights
         NotificationRecord ledNotification = null;
         while (ledNotification == null && !mLights.isEmpty()) {
@@ -2921,7 +2927,9 @@ public class NotificationManagerService extends SystemService {
             enableLed = false;
         } else if (isLedNotificationForcedOn(ledNotification)) {
             enableLed = true;
-        } else if (mInCall || mScreenOn) {
+        } else if (mInCall) {
+            enableLed = false;
+        } else if (mScreenOn && (!ScreenOnNotificationLed)) {
             enableLed = false;
         } else {
             enableLed = true;
