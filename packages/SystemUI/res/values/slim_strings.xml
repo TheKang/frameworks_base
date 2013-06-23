@@ -144,6 +144,7 @@
     <string name="quick_settings_fcharge">Fast charge</string>
     <string name="quick_settings_hover">HOVER</string>
     <string name="quick_settings_hover_off">HOVER OFF</string>
+    <string name="quick_settings_camera_label">Camera</string>
 
     <!-- Battery status in pie controls -->
     <string name="pie_battery_status_charging">Charging (<xliff:g id="percent">%d</xliff:g>%%)</string>
