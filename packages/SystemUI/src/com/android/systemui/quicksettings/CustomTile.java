@@ -109,6 +109,9 @@ public class CustomTile extends QuickSettingsTile {
             @Override
             public void onClick(View v) {
                 processClick();
+                if (isFlipTilesEnabled()) {
+                    flipTile(0);
+                }
             }
         };
         mOnLongClick = new View.OnLongClickListener() {
@@ -117,6 +120,9 @@ public class CustomTile extends QuickSettingsTile {
                 if (mState != -1) {
                     SlimActions.processActionWithOptions(
                             mContext, mLongActions[mState], false, mCollapse);
+                }
+                if (isFlipTilesEnabled()) {
+                    flipTile(0);
                 }
                 return true;
             }

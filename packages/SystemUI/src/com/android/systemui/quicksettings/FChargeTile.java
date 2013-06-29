@@ -74,6 +74,9 @@ public class FChargeTile extends QuickSettingsTile {
                         BufferedWriter bwriter = new BufferedWriter(fwriter);
                         bwriter.write(mEnabled ? "1" : "0");
                         bwriter.close();
+                        if (isFlipTilesEnabled()) {
+                            flipTile(0);
+                        }
                     } catch (IOException e) {
                         Log.e("FChargeToggle", "Couldn't write fast_charge file");
                     }

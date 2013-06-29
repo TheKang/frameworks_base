@@ -43,6 +43,9 @@ public class HoverTile extends QuickSettingsTile {
                 Settings.System.putInt(mContext.getContentResolver(),
                         Settings.System.HOVER_ACTIVE,
                         mEnabled ? 0 : 1);
+                if (isFlipTilesEnabled()) {
+                    flipTile(0);
+                }
             }
         };
         mOnLongClick = new View.OnLongClickListener() {

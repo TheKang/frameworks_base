@@ -42,6 +42,9 @@ public class ShakeEventTile extends QuickSettingsTile {
                 Settings.System.putIntForUser(mContext.getContentResolver(),
                         Settings.System.SHAKE_LISTENER_ENABLED,
                         mEnabled ? 0 : 1, UserHandle.USER_CURRENT);
+                if (isFlipTilesEnabled()) {
+                    flipTile(0);
+                }
             }
         };
         mOnLongClick = new View.OnLongClickListener() {
