@@ -83,6 +83,8 @@
             android:orientation="horizontal"
             >
 
+            <include layout="@layout/network_stats" />
+
             <include layout="@layout/system_icons" />
 
             <com.android.systemui.statusbar.policy.Clock
