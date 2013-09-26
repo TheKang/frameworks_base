@@ -30,7 +30,9 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.GradientDrawable;
@@ -351,7 +353,6 @@ public class GlowPadView extends View {
                                  mHandleDrawable.getPositionY() - mHandleDrawable.getHeight()/2,
                                  mHandleDrawable.getPositionX() + mHandleDrawable.getWidth()/2,
                                  mHandleDrawable.getPositionY() + mHandleDrawable.getHeight()/2);
-
         mPaintText = new Paint();
         mPaintText.setAntiAlias(true);
         mPaintText.setColor(res.getColor(android.R.color.white));
@@ -1407,6 +1408,16 @@ public class GlowPadView extends View {
             canvas.rotate(90f, x, y);
             canvas.drawTextOnPath(mHandleText, circle, 0, 0, mPaintText);
         }
+
+        if (mArcAngle > 0 && mHandleDrawable.getAlpha() > 0) {
+            mArcRect.set(mHandleDrawable.getPositionX() - mHandleDrawable.getWidth()/3,
+                    mHandleDrawable.getPositionY() - mHandleDrawable.getHeight()/3,
+                    mHandleDrawable.getPositionX() + mHandleDrawable.getWidth()/3,
+                    mHandleDrawable.getPositionY() + mHandleDrawable.getHeight()/3);
+
+            canvas.drawArc(mArcRect, -90, mArcAngle, false, mArcPaint);
+        }
+
     }
 
     public void setHandleDrawable(TargetDrawable d) {
@@ -1623,5 +1634,10 @@ public class GlowPadView extends View {
             mOuterRing = new TargetDrawable(res, 0);
         }
         mOuterRing.setState(TargetDrawable.STATE_INACTIVE);
+    }
+
+    public void setArc(float angle, int color) {
+        mArcAngle = angle;
+        mArcPaint.setColor(color);
     }
 }

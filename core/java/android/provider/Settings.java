@@ -4254,6 +4254,12 @@ public final class Settings {
         public static final String STATUSBAR_HIDE_SIGNAL_BARS = "statusbar_hide_signal_bars";
 
         /**
+         * Whether or not to show circle battery around the lockscreen handle
+         * @hide
+         */
+        public static final String BATTERY_ARC_LOCKSCREEN_HANDLE = "battery_arc_lockscreen_handle";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
