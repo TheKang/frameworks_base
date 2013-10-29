@@ -4055,6 +4055,12 @@ public final class Settings {
         public static final String STATUS_BAR_NETWORK_STATS_HIDE = "status_bar_network_stats_hide";
 
         /**
+         * Network stats Color style
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_STATS_COLOR = "status_bar_network_stats_color";
+
+        /**
          * show clear all recents button
          *  @hide
          */
@@ -4065,6 +4071,8 @@ public final class Settings {
          * @hide
          */
         public static final String CLEAR_RECENTS_BUTTON_LOCATION = "clear_recents_button_location";
+
+
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
