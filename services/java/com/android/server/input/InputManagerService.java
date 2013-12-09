@@ -32,6 +32,7 @@ import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -243,6 +244,22 @@ public class InputManagerService extends IInputManager.Stub
 
     /** Whether to use the dev/input/event or uevent subsystem for the audio jack. */
     final boolean mUseDevInputEventForAudioJack;
+    
+    class SettingsObserver extends ContentObserver {
+        String mLastEnabled = "";
+
+        SettingsObserver(Handler handler) {
+            super(handler);
+            ContentResolver resolver = mContext.getContentResolver();
+            resolver.registerContentObserver(Settings.Secure.getUriFor(
+                    Settings.Secure.DEFAULT_INPUT_METHOD), false, this);
+        }
+
+        @Override
+        public void onChange(boolean selfChange) {
+            updateKeyboardLayouts();
+        }
+    }
 
     public InputManagerService(Context context, Handler handler) {
         this.mContext = context;
