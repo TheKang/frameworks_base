@@ -16,7 +16,11 @@
 
 package android.util;
 
+import android.content.res.Configuration;
 import android.os.SystemProperties;
+import android.util.Log;
+
+import com.android.internal.util.slim.DensityUtils;
 
 
 /**
@@ -200,7 +204,11 @@ public class DisplayMetrics {
      */
     public float noncompatYdpi;
 
-    public static int mCurrentDensity = getCurrentDensity();
+    /**
+     * Cached copy of Configuration.fontScale.
+     * @hide
+     */
+    private float fontScale = 1.0f;
 
     public DisplayMetrics() {
     }
@@ -223,9 +231,6 @@ public class DisplayMetrics {
         updateDensity();
     }
 
-    public static void setCurrentDensity(int density) {
-        mCurrentDensity = density;
-    }
 
     public void setToDefaults() {
         widthPixels = 0;
@@ -245,11 +250,12 @@ public class DisplayMetrics {
     }
 
     public void updateDensity() {
-        density = mCurrentDensity / (float) DENSITY_DEFAULT;
-        densityDpi = mCurrentDensity;
-        scaledDensity = density;
-        xdpi = mCurrentDensity;
-        ydpi = mCurrentDensity;
+        int newDensity = DensityUtils.getCurrentDensity();
+        density = newDensity / (float) DENSITY_DEFAULT;
+        densityDpi = newDensity;
+        scaledDensity = density * fontScale;
+        xdpi = newDensity;
+        ydpi = newDensity;
         noncompatDensity = density;
         noncompatDensityDpi = densityDpi;
         noncompatScaledDensity = scaledDensity;
@@ -257,6 +263,12 @@ public class DisplayMetrics {
         noncompatYdpi = ydpi;
     }
 
+    public void updateConfiguration(Configuration config) {
+        // Keep a copy of the fontScale variable when the configuration is
+        // changed. This is needed to calculate scaledDensity, otherwise, the
+        // font size will be stuck at the default size.
+        fontScale = config.fontScale;
+    }
     @Override
     public boolean equals(Object o) {
         return o instanceof DisplayMetrics && equals((DisplayMetrics)o);
@@ -309,10 +321,6 @@ public class DisplayMetrics {
         return "DisplayMetrics{density=" + density + ", width=" + widthPixels +
             ", height=" + heightPixels + ", scaledDensity=" + scaledDensity +
             ", xdpi=" + xdpi + ", ydpi=" + ydpi + "}";
-    }
-
-    public static int getCurrentDensity() {
-        return SystemProperties.getInt("persist.sys.lcd_density", DENSITY_DEVICE);
     }
 
     public static int getDeviceDensity() {
