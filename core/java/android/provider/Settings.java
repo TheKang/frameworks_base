@@ -4260,6 +4260,12 @@ public final class Settings {
         public static final String BATTERY_ARC_LOCKSCREEN_HANDLE = "battery_arc_lockscreen_handle";
 
         /**
+         * Allows to show the background activity back the lockscreen
+         * @hide
+         */
+        public static final String LOCKSCREEN_SEE_THROUGH = "lockscreen_see_through";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
