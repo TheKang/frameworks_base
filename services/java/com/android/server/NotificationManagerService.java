@@ -650,8 +650,7 @@ public class NotificationManagerService extends INotificationManager.Stub
             final ComponentName component = info.component;
             final int oldUser = info.userid;
             if (!info.isSystem) {
-                Slog.v(TAG, "disabling notification listener for user "
-                        + oldUser + ": " + component);
+                Slog.v(TAG, "disabling notification listener for user " + oldUser + ": " + component);
                 unregisterListenerService(component, info.userid);
             }
         }

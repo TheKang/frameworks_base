@@ -126,7 +126,7 @@ public final class NavigationBarTransitions extends BarTransitions {
 
         backAlpha = maxVisibleQuiescentAlpha(backAlpha, mView.getSearchLight());
         backAlpha = maxVisibleQuiescentAlpha(backAlpha, mView.getCameraButton());
-
+        backAlpha = maxVisibleQuiescentAlpha(backAlpha, mView.getNotifsButton());
         final View home = mView.getHomeButton();
         final View recent = mView.getRecentsButton();
         if (home != null) {
@@ -142,7 +142,6 @@ public final class NavigationBarTransitions extends BarTransitions {
                 backAlpha = maxVisibleQuiescentAlpha(backAlpha, customButton);
             }
         }
-
         if (backAlpha > 0) {
             setKeyButtonViewQuiescentAlpha(back, backAlpha, animate);
         }

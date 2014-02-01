@@ -117,8 +117,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private boolean mIMECursorDisabled;
     private int mDisabledFlags = 0;
     private int mNavigationIconHints = 0;
+    boolean mWasNotifsButtonVisible = false;
 
-    private Drawable mBackIcon, mBackAltIcon;
+    private Drawable mBackIcon, mBackAltIcon, mRecentAltIcon, mRecentAltLandIcon;
 
     protected DelegateViewHelper mDelegateHelper;
     private DeadZone mDeadZone;
@@ -135,8 +136,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     private ArrayList<ButtonConfig> mButtonsConfig;
     private List<Integer> mButtonIdList;
-
-    boolean mWasNotifsButtonVisible = false;
 
     private static LockPatternUtils mLockPatternUtils;
 
@@ -403,7 +402,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     }
 
     private void updateKeyButtonViewResources(ViewGroup container) {
-        // TODO: fix this for AOKP
     }
 
     @Override
@@ -752,10 +750,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         final ImageView iv = (ImageView)getNotifsButton();
         mHandler.post(new Runnable() {
             public void run() {
-                iv.setImageResource((iconId == 1) ?
-                        R.drawable.search_light_land : R.drawable.ic_notify_clear_normal);
-                mWasNotifsButtonVisible = iconId != 0
-                        && ((mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
+                if (iconId == 1) iv.setImageResource(R.drawable.search_light_land);
+                else iv.setImageDrawable(mVertical ? mRecentAltLandIcon : mRecentAltIcon);
+                mWasNotifsButtonVisible = iconId != 0 && ((mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
                 setVisibleOrGone(getNotifsButton(), mWasNotifsButtonVisible);
             }
         });
