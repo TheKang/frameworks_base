@@ -109,7 +109,6 @@ public class KeyguardViewManager {
 
     private Bitmap mBlurredImage = null;
     private int mLastRotation = 0;
-
     private KeyguardUpdateMonitorCallback mBackgroundChanger = new KeyguardUpdateMonitorCallback() {
         @Override
         public void onSetBackground(Bitmap bmp) {

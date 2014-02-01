@@ -65,7 +65,7 @@ public class NotificationHostView extends FrameLayout {
     private static final float SWIPE = 0.2f;
     private static final int ANIMATION_MAX_DURATION = 300;
     private static final int PPMS = 2;
-    private static final int MAX_ALPHA = 225; //AOSPAL: 150
+    private static final int MAX_ALPHA = 190; //AOSPAL: 150
 
     //Here we store dimissed notifications so we don't add them again in onFinishInflate
     private static HashMap<String, StatusBarNotification> mDismissedNotifications = new HashMap<String, StatusBarNotification>();

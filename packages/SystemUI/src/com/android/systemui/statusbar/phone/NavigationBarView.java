@@ -117,7 +117,6 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private boolean mIMECursorDisabled;
     private int mDisabledFlags = 0;
     private int mNavigationIconHints = 0;
-    boolean mWasNotifsButtonVisible = false;
 
     private Drawable mBackIcon, mBackAltIcon, mRecentAltIcon, mRecentAltLandIcon;
 
@@ -137,6 +136,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private ArrayList<ButtonConfig> mButtonsConfig;
     private List<Integer> mButtonIdList;
 
+    boolean mWasNotifsButtonVisible = false;
     private static LockPatternUtils mLockPatternUtils;
 
     // workaround for LayoutTransitions leaving the nav buttons in a weird state (bug 5549288)
@@ -215,7 +215,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     private final OnTouchListener mCameraTouchListener = new OnTouchListener() {
         @Override
-        public boolean onTouch(View view, MotionEvent event) {
+        public boolean onTouch(View cameraButtonView, MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     // disable search gesture while interacting with additional navbar button
@@ -510,10 +510,15 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         // now the keyguard searchlight and camera button
         final KeyButtonView searchLight = (KeyButtonView) getSearchLight();
         final KeyButtonView cameraButton = (KeyButtonView) getCameraButton();
+        final KeyButtonView notifsButton = (KeyButtonView) getNotifsButton();
+
         Drawable defaultSearchLightDrawable =
                 res.getDrawable(R.drawable.search_light);
         Drawable defaultCameraButtonDrawable =
                 res.getDrawable(R.drawable.ic_sysbar_camera);
+        Drawable defaultNotifsButtonDrawable =
+                res.getDrawable(R.drawable.search_light_land);
+
         if (searchLight != null && defaultSearchLightDrawable != null) {
             if (mNavBarButtonColorMode != 3) {
                 searchLight.setImageBitmap(
@@ -528,6 +533,14 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
                     ImageHelper.getColoredBitmap(defaultCameraButtonDrawable, mNavBarButtonColor));
             } else {
                 cameraButton.setImageDrawable(defaultCameraButtonDrawable);
+            }
+        }
+        if (notifsButton != null && defaultNotifsButtonDrawable != null) {
+            if (mNavBarButtonColorMode != 3) {
+                notifsButton.setImageBitmap(
+                    ImageHelper.getColoredBitmap(defaultNotifsButtonDrawable, mNavBarButtonColor));
+            } else {
+                notifsButton.setImageDrawable(defaultNotifsButtonDrawable);
             }
         }
     }
@@ -750,9 +763,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         final ImageView iv = (ImageView)getNotifsButton();
         mHandler.post(new Runnable() {
             public void run() {
-                if (iconId == 1) iv.setImageResource(R.drawable.search_light_land);
-                else iv.setImageDrawable(mVertical ? mRecentAltLandIcon : mRecentAltIcon);
-                mWasNotifsButtonVisible = iconId != 0 && ((mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
+                iv.setImageResource((iconId == 1) ?
+                        R.drawable.search_light_land : R.drawable.ic_notify_clear_normal);
+                mWasNotifsButtonVisible = iconId != 0
+                        && ((mDisabledFlags & View.STATUS_BAR_DISABLE_HOME) != 0);
                 setVisibleOrGone(getNotifsButton(), mWasNotifsButtonVisible);
             }
         });
@@ -827,14 +841,17 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
         final boolean showSearch = disableHome && !disableSearch;
         final boolean showCamera = showSearch && !mCameraDisabledByDpm;
+
         final boolean showNotifs = showSearch &&
                 Settings.System.getInt(mContext.getContentResolver(),
                         Settings.System.LOCKSCREEN_NOTIFICATIONS, 1) == 1 &&
-                !mLockPatternUtils.isSecure();
+                Settings.System.getInt(mContext.getContentResolver(),
+                        Settings.System.LOCKSCREEN_NOTIFICATIONS_PRIVACY_MODE, 0) == 0;
 
-        setVisibleOrGone(getSearchLight(), showSearch);
-        setVisibleOrGone(getCameraButton(), showCamera);
-        setVisibleOrGone(getNotifsButton(), showNotifs && mWasNotifsButtonVisible);
+        final View notifsButton = getNotifsButton();
+        if (notifsButton != null) {
+            setVisibleOrGone(notifsButton, showNotifs && mWasNotifsButtonVisible);
+        }
 
         mBarTransitions.applyBackButtonQuiescentAlpha(mBarTransitions.getMode(), true /*animate*/);
 
