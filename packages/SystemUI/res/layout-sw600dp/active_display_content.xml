@@ -53,6 +53,9 @@
             android:layout_height="@dimen/handle_icon_size"
             android:layout_centerInParent="true"
             android:scaleType="fitCenter" />
+            systemui:corner_radius="30dip"
+            systemui:is_oval="true"
+            android:src="@drawable/ic_ad_unlock" />
 
         <View
             android:id="@+id/anchor"
