@@ -351,8 +351,13 @@ public class Clock extends TextView implements DemoMode {
 
     }
 
-    protected void updateClockVisibility() {
-        if (mClockStyle == STYLE_CLOCK_RIGHT && mShowClock)
+    public void updateVisibilityFromStatusBar(boolean show) {
+        mShowClockStatusBar = show;
+        updateClockVisibility();
+    }
+
+    public void updateClockVisibility() {
+        if (mClockStyle == STYLE_CLOCK_RIGHT && mShowClock && mShowClockStatusBar)
             setVisibility(View.VISIBLE);
         else
             setVisibility(View.GONE);
