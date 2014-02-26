@@ -4223,6 +4223,12 @@ public final class Settings {
         public static final String ACTIVE_DISPLAY_CONTENT = "active_display_content";
 
         /**
+         * Whether to not showing active display when there is annoying notifications.
+         * @hide
+         */
+        public static final String ACTIVE_DISPLAY_ANNOYING = "active_display_annoying";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *
