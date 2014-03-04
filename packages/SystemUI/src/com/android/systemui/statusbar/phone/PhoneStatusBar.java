@@ -522,6 +522,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.STATUS_BAR_AUTO_UNHIDE), false, this,
                     UserHandle.USER_ALL);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.CUSTOM_RECENT), false, this,
+                    UserHandle.USER_ALL);
             update();
         }
 
@@ -1578,12 +1581,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
     private void prepareNavigationBarView() {
         mNavigationBarView.reorient();
-
         View home = mNavigationBarView.getHomeButton();
         if (home != null) {
             home.setOnTouchListener(mHomeSearchActionListener);
         }
-        mNavigationBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
+        if (mNavigationBarView.getSearchLight() != null || mCustomRecent) {
+            mNavigationBarView.getSearchLight().setOnTouchListener(mHomeSearchActionListener);
+        }
         setDisableHomeLongpress();
         updateSearchPanel(mNavigationBarCanMove, mNavigationRingConfig);
     }
@@ -3931,8 +3935,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mNavigationBarView.recreateNavigationBar();
         }
         repositionNavigationBar();
-
-        rebuildRecentsScreen();
+        rebuildRecentsScreen(); //it follow toggle settings
 
         // recreate StatusBarIconViews.
         for (int i = 0; i < nIcons; i++) {
