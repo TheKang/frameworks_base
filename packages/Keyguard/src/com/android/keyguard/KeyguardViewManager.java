@@ -103,6 +103,8 @@ public class KeyguardViewManager {
     private boolean mRotated = false;
     private LockPatternUtils mLockPatternUtils;
 
+    private int mBlurRadius = 14;
+
     private NotificationHostView mNotificationView;
     private NotificationViewManager mNotificationViewManager;
     private boolean mLockscreenNotifications = false;
@@ -137,6 +139,8 @@ public class KeyguardViewManager {
             ContentResolver resolver = mContext.getContentResolver();
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_NOTIFICATIONS), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_BLUR_RADIUS), false, this);
         }
 
         @Override
@@ -154,6 +158,8 @@ public class KeyguardViewManager {
             mNotificationViewManager.unregisterListeners();
             mNotificationViewManager = null;
         }
+        mBlurRadius = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.LOCKSCREEN_BLUR_RADIUS, mBlurRadius);
     }
 
     /**
@@ -225,7 +231,11 @@ public class KeyguardViewManager {
 
     public void setBackgroundBitmap(Bitmap bmp) {
         if (bmp != null) {
-            mBlurredImage = blurBitmap(bmp, bmp.getWidth() < 900 ? 14: 18);
+            if (mBlurRadius > 0) {
+                mBlurredImage = blurBitmap(bmp, mBlurRadius);
+            } else {
+                mBlurredImage = bmp;
+            }
         } else {
             mBlurredImage = null;
         }
