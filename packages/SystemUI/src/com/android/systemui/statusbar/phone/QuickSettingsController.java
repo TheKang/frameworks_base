@@ -56,6 +56,7 @@ import static com.android.internal.util.slim.QSConstants.TILE_WIFIAP;
 import static com.android.internal.util.slim.QSConstants.TILE_REBOOT;
 import static com.android.internal.util.slim.QSConstants.TILE_FCHARGE;
 import static com.android.internal.util.slim.QSConstants.TILE_PROFILE;
+import static com.android.internal.util.slim.QSConstants.TILE_ONTHEGO;
 
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
@@ -95,6 +96,7 @@ import com.android.systemui.quicksettings.MobileNetworkTile;
 import com.android.systemui.quicksettings.MobileNetworkTypeTile;
 import com.android.systemui.quicksettings.MusicTile;
 import com.android.systemui.quicksettings.NfcTile;
+import com.android.systemui.quicksettings.OnTheGoTile;
 import com.android.systemui.quicksettings.PreferencesTile;
 import com.android.systemui.quicksettings.QuickSettingsTile;
 import com.android.systemui.quicksettings.QuickRecordTile;
@@ -123,7 +125,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class QuickSettingsController {
-    private static String TAG = "QuickSettingsController";
+    private static final String TAG = "QuickSettingsController";
 
     // Stores the broadcast receivers and content observers
     // quick tiles register for.
@@ -285,6 +287,8 @@ public class QuickSettingsController {
                 qs = new FChargeTile(mContext, this);
             } else if (tile.equals(TILE_PROFILE)) {
                 qs = new ProfileTile(mContext, this);
+            } else if (tile.equals(TILE_ONTHEGO)) {
+                qs = new OnTheGoTile(mContext, this);
             }
 
             if (qs != null) {
@@ -453,7 +457,7 @@ public class QuickSettingsController {
                 }
             }
         }
-    };
+    }
 
     void setBar(PanelBar bar) {
         mBar = bar;

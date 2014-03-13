@@ -50,6 +50,7 @@ public class QSConstants {
         public static final String TILE_CONTACT = "tileContact";
         public static final String TILE_FCHARGE = "toggleFCharge";
         public static final String TILE_PROFILE = "toggleProfile";
+        public static final String TILE_ONTHEGO = "toggleOnTheGo";
         public static final String TILE_SHAKE = "tileShake";
 
         // dynamic tiles

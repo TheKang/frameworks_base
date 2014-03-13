@@ -194,4 +194,25 @@ public class DeviceUtils {
         return getScreenType(con) == DEVICE_TABLET;
     }
 
+    /**
+     * Check if system has a camera.
+     *
+     * @param context
+     * @return
+     */
+    public static boolean hasCamera(final Context context) {
+        final PackageManager pm = context.getPackageManager();
+        return pm != null && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA);
+    }
+
+    /**
+     * Check if system has a front camera.
+     *
+     * @param context
+     * @return
+     */
+    public static boolean hasFrontCamera(final Context context) {
+        final PackageManager pm = context.getPackageManager();
+        return pm != null && pm.hasSystemFeature(PackageManager.FEATURE_CAMERA_FRONT);
+    }
 }

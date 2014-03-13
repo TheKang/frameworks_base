@@ -80,6 +80,7 @@ import java.util.List;
 import java.util.UUID;
 
 import com.android.internal.statusbar.IStatusBarService;
+import com.android.internal.util.nameless.NamelessActions;
 import com.android.internal.util.slim.ButtonConfig;
 import com.android.internal.util.slim.ImageHelper;
 import com.android.internal.util.slim.PolicyConstants;
@@ -338,12 +339,13 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
                             return true;
                         }
                     });
-            // next: profile - only shown if enabled, which is true by default
+            // next: profile
             } else if (config.getClickAction().equals(PolicyConstants.ACTION_PROFILES)) {
                 mItems.add(
                     new ProfileChooseAction() {
                         public void onPress() {
-                            if (Settings.System.getInt(mContext.getContentResolver(), SYSTEM_PROFILES_ENABLED, 1) == 1) {
+                            if (Settings.System.getInt(mContext.getContentResolver(),
+                                    SYSTEM_PROFILES_ENABLED, 1) == 1) {
                                 createProfileDialog();
                             }
                         }
@@ -358,6 +360,27 @@ class GlobalActions implements DialogInterface.OnDismissListener, DialogInterfac
 
                         public boolean showBeforeProvisioning() {
                             return false;
+                        }
+                    });
+            // next: On-The-Go
+            } else if (config.getClickAction().equals(PolicyConstants.ACTION_ONTHEGO)) {
+                mItems.add(
+                    new SinglePressAction(R.drawable.ic_lock_onthego, R.string.global_action_onthego) {
+                        public void onPress() {
+                            NamelessActions.processAction(mContext,
+                                    NamelessActions.ACTION_ONTHEGO_TOGGLE);
+                        }
+
+                        public boolean onLongPress() {
+                            return false;
+                        }
+
+                        public boolean showDuringKeyguard() {
+                            return true;
+                        }
+
+                        public boolean showBeforeProvisioning() {
+                            return true;
                         }
                     });
             // screenshot

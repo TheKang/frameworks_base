@@ -1291,6 +1291,21 @@ public final class Settings {
             }
         }
 
+        /** @hide */
+        public static boolean getBooleanForUser(ContentResolver cr, String name, boolean def,
+                                                int userHandle) {
+            final String v = getStringForUser(cr, name, userHandle);
+            try {
+                if (v != null) {
+                    return "1".equals(v);
+                } else {
+                    return def;
+                }
+            } catch (NumberFormatException e) {
+                return def;
+            }
+        }
+
         /**
          * Convenience function for updating a single settings value as an
          * integer. This will either create a new entry in the table if the
@@ -1330,6 +1345,12 @@ public final class Settings {
          */
         public static boolean putBoolean(ContentResolver cr, String name, boolean value) {
             return putString(cr, name, value ? "1" : "0");
+        }
+
+        /** @hide */
+        public static boolean putBooleanForUser(ContentResolver cr, String name, boolean value,
+                                                int userHandle) {
+            return putStringForUser(cr, name, value ? "1" : "0", userHandle);
         }
 
         /**
@@ -4276,6 +4297,29 @@ public final class Settings {
          * @hide
          */
         public static final String SYSTEM_PROFILES_ENABLED = "system_profiles_enabled";
+
+        /**
+         * The alpha value of the On-The-Go overlay.
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_ALPHA = "on_the_go_alpha";
+
+        /**
+         * The camera instance to use.
+         * 0 = Rear Camera
+         * 1 = Front Camera
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_CAMERA = "on_the_go_camera";
+
+        /**
+         * Whether the service should restart itself or not.
+         *
+         * @hide
+         */
+        public static final String ON_THE_GO_SERVICE_RESTART = "on_the_go_service_restart";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
