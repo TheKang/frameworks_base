@@ -17,6 +17,8 @@
 package com.android.keyguard;
 
 import android.app.INotificationManager;
+import android.app.Profile;
+import android.app.ProfileManager;
 import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -62,6 +64,8 @@ public class NotificationViewManager {
     private INotificationManager mNotificationManager;
     private PowerManager mPowerManager;
     private NotificationHostView mHostView;
+
+    private ProfileManager mProfileManager;
 
     private Set<String> mExcludedApps = new HashSet<String>();
 
@@ -168,7 +172,8 @@ public class NotificationViewManager {
                     if (event.values[0] >= ProximitySensor.getMaximumRange()) {
                         if (config.pocketMode && mTimeCovered != 0 && (config.showAlways || mHostView.getNotificationCount() > 0)
                                 && System.currentTimeMillis() - mTimeCovered > MIN_TIME_COVERED
-                                && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)) {
+                                && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
+                                && !isDisabledByProfiles()) {
                             wakeDevice();
                             mWokenByPocketMode = true;
                             mHostView.showAllNotifications();
@@ -197,7 +202,8 @@ public class NotificationViewManager {
                     config.forceExpandedView);
             if ( added && config.wakeOnNotification && screenOffAndNotCovered
                         && showNotification && mTimeCovered == 0
-                        && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)) {
+                        && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
+                        && !isDisabledByProfiles()) {
                 wakeDevice();
                 mHostView.showAllNotifications();
             }
@@ -221,6 +227,7 @@ public class NotificationViewManager {
                 ServiceManager.getService(Context.NOTIFICATION_SERVICE));
 
         mPowerManager = (PowerManager) mContext.getSystemService(Context.POWER_SERVICE);
+        mProfileManager = (ProfileManager) context.getSystemService(Context.PROFILE_SERVICE);
 
         config = new Configuration(new Handler());
         config.observe();
@@ -282,6 +289,11 @@ public class NotificationViewManager {
 
     private void wakeDevice() {
         mPowerManager.wakeUp(SystemClock.uptimeMillis());
+    }
+
+    private boolean isDisabledByProfiles() {
+        int isDisabled = mProfileManager.getActiveProfile().getDisableAD();
+        return (isDisabled == 1);
     }
 
     public void onScreenTurnedOff() {
