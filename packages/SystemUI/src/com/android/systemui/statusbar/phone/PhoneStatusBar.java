@@ -90,6 +90,7 @@ import android.view.ViewGroup.LayoutParams;
 import android.view.ViewPropertyAnimator;
 import android.view.ViewStub;
 import android.view.WindowManager;
+import android.view.WindowManagerGlobal;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -1011,12 +1012,12 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     }
 
     private void cleanupRibbon() {
-        if (mRibbonView == null) {
-            return;
+        if (mRibbonView != null)
+            mRibbonView.setVisibility(View.GONE);
+        if (mRibbonQS != null) {
+            mRibbonQS.shutdown();
+            mRibbonQS = null;
         }
-        mRibbonView.setVisibility(View.GONE);
-        mRibbonQS.shutdown();
-        mRibbonQS = null;
     }
 
     private void inflateRibbon() {
@@ -1031,14 +1032,14 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             QuickSettingsContainerView mRibbonContainer = (QuickSettingsContainerView)
                     mStatusBarWindow.findViewById(R.id.quick_settings_ribbon_container);
             if (mRibbonContainer != null) {
+                String settingsKey = mQuickAccessLayoutLinked
+                        ? Settings.System.QUICK_SETTINGS_TILES
+                        : Settings.System.QUICK_SETTINGS_RIBBON_TILES;
                 mRibbonQS = new QuickSettingsController(mContext, mRibbonContainer, this,
-                        mQuickAccessLayoutLinked ? Settings.System.QUICK_SETTINGS_TILES
-                            : Settings.System.QUICK_SETTINGS_RIBBON_TILES);
-                mRibbonQS.hideLiveTiles(true);
+                        settingsKey, true);
                 mRibbonQS.setService(this);
                 mRibbonQS.setBar(mStatusBarView);
                 mRibbonQS.setupQuickSettings();
-                mRibbonQS.setTileTitleVisibility(false);
             }
         }
     }
@@ -1412,7 +1413,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mStatusBarWindow.findViewById(R.id.quick_settings_container);
             if (mSettingsContainer != null) {
                 mQS = new QuickSettingsController(mContext, mSettingsContainer, this,
-                        Settings.System.QUICK_SETTINGS_TILES);
+                        Settings.System.QUICK_SETTINGS_TILES, false);
                 if (!mNotificationPanelIsFullScreenWidth) {
                     mSettingsContainer.setSystemUiVisibility(
                             View.STATUS_BAR_DISABLE_NOTIFICATION_TICKER
@@ -1431,11 +1432,13 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             final ContentResolver resolver = mContext.getContentResolver();
 //            mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
 //                    Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
-            mHasQuickAccessSettings = 1 == 1;
 //            mQuickAccessLayoutLinked = Settings.System.getIntForUser(resolver,
 //                    Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
-            mQuickAccessLayoutLinked = 1 == 1;
+            mHasQuickAccessSettings = (1 == 1);
+            mQuickAccessLayoutLinked = (1 == 1);
             if (mHasQuickAccessSettings) {
+                cleanupRibbon();
+                mRibbonView = null;
                 inflateRibbon();
             }
         }
@@ -2584,6 +2587,16 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         return a;
     }
 
+    public Animator setVisibilityOnStart(
+            final Animator a, final View v, final int vis) {
+        a.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+                v.setVisibility(vis);
+            }
+        });
+        return a;
+    }
     public Animator interpolator(TimeInterpolator ti, Animator a) {
         a.setInterpolator(ti);
         return a;
@@ -2654,10 +2667,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             mRibbonView.setVisibility(View.VISIBLE);
             mRibbonViewAnim = start(
                     startDelay(FLIP_DURATION_OUT * zeroOutDelays,
+                    setVisibilityOnStart(
                             interpolator(mDecelerateInterpolator,
                                     ObjectAnimator.ofFloat(mRibbonView, View.SCALE_X, 1f)
-                                    .setDuration(FLIP_DURATION_IN)
-                                    )));
+                                .setDuration(FLIP_DURATION_IN)),
+                        mRibbonView, View.VISIBLE)));
         }
         mFlipSettingsViewAnim = start(
             setVisibilityWhenDone(
@@ -4219,9 +4233,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 }
             }
         } else {
-            if (mQS != null) {
-                mQS.updateResources();
-            }
+            // Update the QuickSettings container
+            if (mQS != null) mQS.updateResources();
+            if (mRibbonQS != null)
+                mRibbonQS.updateResources();
         }
 
     }
@@ -4507,7 +4522,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 final ContentResolver resolver = mContext.getContentResolver();
 //                mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
 //                        Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
-                mHasQuickAccessSettings = 1 == 1;
+                mHasQuickAccessSettings = (1 == 1);
                 if (mHasQuickAccessSettings) {
                     inflateRibbon();
                     mRibbonView.setVisibility(View.VISIBLE);
@@ -4515,11 +4530,15 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     cleanupRibbon();
                 }
             } else if (uri != null && uri.equals(Settings.System.getUriFor(
+                    Settings.System.QS_QUICK_ACCESS_SIZE))) {
+                if (mRibbonQS != null)
+                    mRibbonQS.updateResources();
+            } else if (uri != null && uri.equals(Settings.System.getUriFor(
                     Settings.System.QS_QUICK_ACCESS_LINKED))) {
                 final ContentResolver resolver = mContext.getContentResolver();
 //                boolean layoutLinked = Settings.System.getIntForUser(resolver,
 //                        Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
-                boolean layoutLinked = 1 == 1;
+                boolean layoutLinked = (1 == 1);
                 if (mQuickAccessLayoutLinked != layoutLinked) {
                     // Reload the ribbon
                     mQuickAccessLayoutLinked = layoutLinked;
@@ -4534,6 +4553,9 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                     mRibbonView.setVisibility(View.VISIBLE);
             } else if (mSettingsContainer != null) {
                 mQS.setupQuickSettings();
+                if (mQuickAccessLayoutLinked && mRibbonQS != null) {
+                    mRibbonQS.setupQuickSettings();
+                }
             }
         }
 
@@ -4545,6 +4567,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
 
             cr.registerContentObserver(
                     Settings.System.getUriFor(Settings.System.QS_QUICK_ACCESS),
+                    false, this, UserHandle.USER_ALL);
+
+            cr.registerContentObserver(
+                    Settings.System.getUriFor(Settings.System.QS_QUICK_ACCESS_SIZE),
                     false, this, UserHandle.USER_ALL);
 
             cr.registerContentObserver(

@@ -3307,6 +3307,13 @@ public final class Settings {
         public static final String QS_QUICK_ACCESS_LINKED = "qs_quick_access_linked";
 
         /**
+         * Quick Settings Quick access ribbon - size
+         *
+         * @hide
+         */
+        public static final String QS_QUICK_ACCESS_SIZE = "qs_quick_access_size";
+
+        /**
          * Quick Settings Ribbon Tiles to Use
          *
          * @hide
