@@ -30,4 +30,7 @@
   <!-- WiFi turn off notification -->
   <java-symbol type="string" name="notify_turn_wifi_off_title" />
 
+  <!-- Download Icon -->
+  <java-symbol type="drawable" name="stat_sys_downloadicon" />
+
 </resources>
