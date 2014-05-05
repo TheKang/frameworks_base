@@ -35,6 +35,7 @@ interface IStatusBarService
     void expandSettingsPanel();
     void setCurrentUser(int newUserId);
     void setButtonDrawable(int buttonId, int iconId);
+    void setStatusBarHiddenState(boolean hidden);
 
     // ---- Methods below are for use by the status bar policy services ----
     // You need the STATUS_BAR_SERVICE permission

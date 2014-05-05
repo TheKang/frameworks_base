@@ -40,30 +40,31 @@ public class CommandQueue extends IStatusBar.Stub {
     private static final int OP_SET_ICON    = 1;
     private static final int OP_REMOVE_ICON = 2;
 
-    private static final int MSG_ICON                       = 1 << MSG_SHIFT;
-    private static final int MSG_ADD_NOTIFICATION           = 2 << MSG_SHIFT;
-    private static final int MSG_UPDATE_NOTIFICATION        = 3 << MSG_SHIFT;
-    private static final int MSG_REMOVE_NOTIFICATION        = 4 << MSG_SHIFT;
-    private static final int MSG_DISABLE                    = 5 << MSG_SHIFT;
-    private static final int MSG_EXPAND_NOTIFICATIONS       = 6 << MSG_SHIFT;
-    private static final int MSG_COLLAPSE_PANELS            = 7 << MSG_SHIFT;
-    private static final int MSG_EXPAND_SETTINGS            = 8 << MSG_SHIFT;
-    private static final int MSG_SET_SYSTEMUI_VISIBILITY    = 9 << MSG_SHIFT;
-    private static final int MSG_TOP_APP_WINDOW_CHANGED     = 10 << MSG_SHIFT;
-    private static final int MSG_SHOW_IME_BUTTON            = 11 << MSG_SHIFT;
-    private static final int MSG_SET_HARD_KEYBOARD_STATUS   = 12 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_RECENT_APPS         = 13 << MSG_SHIFT;
-    private static final int MSG_PRELOAD_RECENT_APPS        = 14 << MSG_SHIFT;
-    private static final int MSG_CANCEL_PRELOAD_RECENT_APPS = 15 << MSG_SHIFT;
-    private static final int MSG_SET_WINDOW_STATE           = 16 << MSG_SHIFT;
-    private static final int MSG_SET_AUTOROTATE_STATUS      = 17 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_NOTIFICATION_SHADE  = 18 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_QS_SHADE            = 19 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_SCREENSHOT          = 20 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_LAST_APP            = 21 << MSG_SHIFT;
-    private static final int MSG_TOGGLE_KILL_APP            = 22 << MSG_SHIFT;
-    private static final int MSG_SET_PIE_TRIGGER_MASK       = 23 << MSG_SHIFT;
-    private static final int MSG_SMART_PULLDOWN             = 24 << MSG_SHIFT;
+    private static final int MSG_ICON                        = 1 << MSG_SHIFT;
+    private static final int MSG_ADD_NOTIFICATION            = 2 << MSG_SHIFT;
+    private static final int MSG_UPDATE_NOTIFICATION         = 3 << MSG_SHIFT;
+    private static final int MSG_REMOVE_NOTIFICATION         = 4 << MSG_SHIFT;
+    private static final int MSG_DISABLE                     = 5 << MSG_SHIFT;
+    private static final int MSG_EXPAND_NOTIFICATIONS        = 6 << MSG_SHIFT;
+    private static final int MSG_COLLAPSE_PANELS             = 7 << MSG_SHIFT;
+    private static final int MSG_EXPAND_SETTINGS             = 8 << MSG_SHIFT;
+    private static final int MSG_SET_SYSTEMUI_VISIBILITY     = 9 << MSG_SHIFT;
+    private static final int MSG_TOP_APP_WINDOW_CHANGED      = 10 << MSG_SHIFT;
+    private static final int MSG_SHOW_IME_BUTTON             = 11 << MSG_SHIFT;
+    private static final int MSG_SET_HARD_KEYBOARD_STATUS    = 12 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_RECENT_APPS          = 13 << MSG_SHIFT;
+    private static final int MSG_PRELOAD_RECENT_APPS         = 14 << MSG_SHIFT;
+    private static final int MSG_CANCEL_PRELOAD_RECENT_APPS  = 15 << MSG_SHIFT;
+    private static final int MSG_SET_WINDOW_STATE            = 16 << MSG_SHIFT;
+    private static final int MSG_SET_AUTOROTATE_STATUS       = 17 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_NOTIFICATION_SHADE   = 18 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_QS_SHADE             = 19 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_SCREENSHOT           = 20 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_LAST_APP             = 21 << MSG_SHIFT;
+    private static final int MSG_TOGGLE_KILL_APP             = 22 << MSG_SHIFT;
+    private static final int MSG_SET_PIE_TRIGGER_MASK        = 23 << MSG_SHIFT;
+    private static final int MSG_SMART_PULLDOWN              = 24 << MSG_SHIFT;
+    private static final int MSG_SET_STATUS_BAR_HIDDEN_STATE = 25 << MSG_SHIFT;
 
     public static final int FLAG_EXCLUDE_NONE = 0;
     public static final int FLAG_EXCLUDE_SEARCH_PANEL = 1 << 0;
@@ -98,6 +99,7 @@ public class CommandQueue extends IStatusBar.Stub {
         public void animateExpandSettingsPanel(boolean flip);
         public void setSystemUiVisibility(int vis, int mask);
         public void topAppWindowChanged(boolean visible);
+        public void setStatusBarHiddenState(boolean hidden);
         public void setImeWindowStatus(IBinder token, int vis, int backDisposition);
         public void setHardKeyboardStatus(boolean available, boolean enabled);
         public void toggleRecentApps();
@@ -205,6 +207,14 @@ public class CommandQueue extends IStatusBar.Stub {
         synchronized (mList) {
             mHandler.removeMessages(MSG_TOP_APP_WINDOW_CHANGED);
             mHandler.obtainMessage(MSG_TOP_APP_WINDOW_CHANGED, menuVisible ? 1 : 0, 0,
+                    null).sendToTarget();
+        }
+    }
+
+    public void setStatusBarHiddenState(boolean hidden) {
+        synchronized (mList) {
+            mHandler.removeMessages(MSG_SET_STATUS_BAR_HIDDEN_STATE);
+            mHandler.obtainMessage(MSG_SET_STATUS_BAR_HIDDEN_STATE, hidden ? 1 : 0, 0,
                     null).sendToTarget();
         }
     }
@@ -414,6 +424,9 @@ public class CommandQueue extends IStatusBar.Stub {
                     break;
                 case MSG_TOGGLE_KILL_APP:
                     mCallbacks.toggleKillApp();
+                    break;
+                case MSG_SET_STATUS_BAR_HIDDEN_STATE:
+                    mCallbacks.setStatusBarHiddenState(msg.arg1 != 0);
                     break;
             }
         }

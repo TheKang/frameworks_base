@@ -196,6 +196,10 @@ public class PhoneStatusBarView extends PanelBar {
         }
         mBar.restorePieTriggerMask();
         mBar.setOverwriteImeIsActive(false);
+
+        if (mBar.mFullscreenView != null) {
+            mBar.removeFullscreenView();
+        }
     }
 
     @Override

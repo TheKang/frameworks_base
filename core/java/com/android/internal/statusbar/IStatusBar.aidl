@@ -48,4 +48,5 @@ oneway interface IStatusBar
     void toggleLastApp();
     void toggleKillApp();
     void setButtonDrawable(int buttonId, int iconId);
+    void setStatusBarHiddenState(boolean hidden);
 }

@@ -166,4 +166,8 @@ public class TvStatusBar extends BaseStatusBar {
     protected void refreshLayout(int layoutDirection) {
     }
 
+    @Override
+    public void setStatusBarHiddenState(boolean hidden) {
+    }
+
 }

@@ -3941,6 +3941,13 @@ public final class Settings {
         public static final String PEEK_STATE = "peek_state";
 
         /**
+         * Automatically unhide status bar temporarily in fullscreen on new notifications
+         *
+         * @hide
+         */
+        public static final String STATUS_BAR_AUTO_UNHIDE = "status_bar_auto_unhide";
+
+        /**
          * Settings to backup. This is here so that it's in the same place as the settings
          * keys and easy to update.
          *

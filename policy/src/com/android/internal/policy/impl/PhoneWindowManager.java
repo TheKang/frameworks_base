@@ -4151,11 +4151,28 @@ public class PhoneWindowManager implements WindowManagerPolicy {
             }
         }
 
-        if (mTopIsFullscreen != topIsFullscreen) {
-            if (!topIsFullscreen) {
+
+        if (topIsFullscreen != mTopIsFullscreen) {
+            final boolean hidden = topIsFullscreen;
+
+            if (!hidden) {
                 // Force another layout when status bar becomes fully shown.
                 changes |= FINISH_LAYOUT_REDO_LAYOUT;
             }
+
+            mHandler.post(new Runnable() {
+                public void run() {
+                    try {
+                        IStatusBarService statusbar = getStatusBarService();
+                        if (statusbar != null) {
+                            statusbar.setStatusBarHiddenState(hidden);
+                        }
+                    } catch (RemoteException e) {
+                        // re-acquire status bar service next time it is needed.
+                        mStatusBarService = null;
+                    }
+                }
+            });
             mTopIsFullscreen = topIsFullscreen;
         }
 
