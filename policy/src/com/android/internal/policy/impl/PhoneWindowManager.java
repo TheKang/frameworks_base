@@ -4155,10 +4155,13 @@ public class PhoneWindowManager implements WindowManagerPolicy {
         if (topIsFullscreen != mTopIsFullscreen) {
             final boolean hidden = topIsFullscreen;
 
-            if (!hidden) {
-                // Force another layout when status bar becomes fully shown.
-                changes |= FINISH_LAYOUT_REDO_LAYOUT;
-            }
+           /**
+            * do we need this?
+            *if (!hidden) {
+            *    // Force another layout when status bar becomes fully shown.
+            *    changes |= FINISH_LAYOUT_REDO_LAYOUT;
+            *}
+            */
 
             mHandler.post(new Runnable() {
                 public void run() {
