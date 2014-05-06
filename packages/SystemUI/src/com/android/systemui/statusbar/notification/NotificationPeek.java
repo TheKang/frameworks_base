@@ -300,8 +300,8 @@ public class NotificationPeek implements SensorActivityHandler.SensorChangedCall
         mNotificationsContainer.setLayoutParams(notificationsLayoutParams);
     }
 
-    public IStatusBarService getStatusBarService() {
-        return mStatusBar.getStatusBarService();
+    public IStatusBarService getService() {
+        return mStatusBar.getService();
     }
 
     public View getNotificationView() {

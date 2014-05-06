@@ -96,7 +96,7 @@ public class NotificationLayout extends LinearLayout implements SwipeHelper.Call
         final String tag = n.getTag();
         final int id = n.getId();
         try {
-            mNotificationPeek.getStatusBarService().onNotificationClear(pkg, tag, id);
+            mNotificationPeek.getService().onNotificationClear(pkg, tag, id);
             mNotificationPeek.setAnimating(false);
         } catch (RemoteException ex) {
             // system process is dead if we're here.

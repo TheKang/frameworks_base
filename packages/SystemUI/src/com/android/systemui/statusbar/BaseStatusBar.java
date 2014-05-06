@@ -83,7 +83,6 @@ import com.android.internal.util.slim.ButtonConfig;
 import com.android.internal.util.slim.DeviceUtils;
 import com.android.systemui.R;
 import com.android.systemui.SearchPanelView;
-import com.android.systemui.AOKPSearchPanelView;
 import com.android.systemui.RecentsComponent;
 import com.android.systemui.SystemUI;
 import com.android.systemui.slimrecent.RecentController;
@@ -223,7 +222,7 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private boolean mDeviceProvisioned = false;
 
-    private boolean mCustomRecent = false;
+    public boolean mCustomRecent = false;
 
     public IStatusBarService getService() {
         return mBarService;
