@@ -80,6 +80,7 @@ public class NotificationViewManager {
         public int notificationsHeight = 4;
         public float offsetTop = 0.3f;
         public boolean privacyMode = false;
+        public boolean dynamicWidth = true;
         public int notificationColor = 0x55555555;
 
         public Configuration(Handler handler) {
@@ -111,6 +112,8 @@ public class NotificationViewManager {
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_OFFSET_TOP), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_PRIVACY_MODE), false, this);
+            resolver.registerContentObserver(Settings.System.getUriFor(
+                    Settings.System.LOCKSCREEN_NOTIFICATIONS_DYNAMIC_WIDTH), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_EXCLUDED_APPS), false, this);
             resolver.registerContentObserver(Settings.System.getUriFor(
@@ -147,6 +150,8 @@ public class NotificationViewManager {
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_HEIGHT, notificationsHeight);
             offsetTop = Settings.System.getFloat(mContext.getContentResolver(),
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_OFFSET_TOP, offsetTop);
+            dynamicWidth = Settings.System.getInt(mContext.getContentResolver(),
+                    Settings.System.LOCKSCREEN_NOTIFICATIONS_DYNAMIC_WIDTH, dynamicWidth ? 1 : 0) == 1;
             String excludedApps = Settings.System.getString(mContext.getContentResolver(),
                     Settings.System.LOCKSCREEN_NOTIFICATIONS_EXCLUDED_APPS);
             notificationColor = Settings.System.getInt(mContext.getContentResolver(),
@@ -191,8 +196,10 @@ public class NotificationViewManager {
             boolean added = mHostView.addNotification(sbn, (screenOffAndNotCovered || mIsScreenOn) && showNotification,
                     config.forceExpandedView);
             if ( added && config.wakeOnNotification && screenOffAndNotCovered
-                        && showNotification && mTimeCovered == 0) {
+                        && showNotification && mTimeCovered == 0
+                        && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)) {
                 wakeDevice();
+                mHostView.showAllNotifications();
             }
         }
         @Override
@@ -289,7 +296,7 @@ public class NotificationViewManager {
     public void onScreenTurnedOn() {
         mIsScreenOn = true;
         mTimeCovered = 0;
-        mHostView.bringToFront();
+        if (mHostView != null) mHostView.bringToFront();
     }
 
     public void onDismiss() {
