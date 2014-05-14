@@ -25,6 +25,7 @@ import static com.android.internal.util.slim.QSConstants.TILE_BATTERY;
 import static com.android.internal.util.slim.QSConstants.TILE_BLUETOOTH;
 import static com.android.internal.util.slim.QSConstants.TILE_BRIGHTNESS;
 import static com.android.internal.util.slim.QSConstants.TILE_BUGREPORT;
+import static com.android.internal.util.slim.QSConstants.TILE_COMPASS;
 import static com.android.internal.util.slim.QSConstants.TILE_CONTACT;
 import static com.android.internal.util.slim.QSConstants.TILE_CUSTOM;
 import static com.android.internal.util.slim.QSConstants.TILE_CUSTOM_KEY;
@@ -86,6 +87,7 @@ import com.android.systemui.quicksettings.BatteryTile;
 import com.android.systemui.quicksettings.BluetoothTile;
 import com.android.systemui.quicksettings.BrightnessTile;
 import com.android.systemui.quicksettings.BugReportTile;
+import com.android.systemui.quicksettings.CompassTile;
 import com.android.systemui.quicksettings.ContactTile;
 import com.android.systemui.quicksettings.CustomTile;
 import com.android.systemui.quicksettings.ExpandedDesktopTile;
@@ -289,6 +291,8 @@ public class QuickSettingsController {
                 qs = new ProfileTile(mContext, this);
             } else if (tile.equals(TILE_ONTHEGO)) {
                 qs = new OnTheGoTile(mContext, this);
+            } else if (tile.equals(TILE_COMPASS)) {
+                qs = new CompassTile(mContext, this);
             }
 
             if (qs != null) {
