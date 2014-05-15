@@ -474,6 +474,12 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
      * @hide
      */
     public int installLocation = PackageInfo.INSTALL_LOCATION_UNSPECIFIED;
+
+    /**
+     * When true, indicates that any one component within this application is
+     * protected.
+     */
+    public boolean protect = false;
     
     public void dump(Printer pw, String prefix) {
         super.dumpFront(pw, prefix);
@@ -583,6 +589,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         descriptionRes = orig.descriptionRes;
         uiOptions = orig.uiOptions;
         backupAgentName = orig.backupAgentName;
+        protect = orig.protect;
     }
 
 
@@ -623,6 +630,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         dest.writeString(backupAgentName);
         dest.writeInt(descriptionRes);
         dest.writeInt(uiOptions);
+        dest.writeInt(protect ? 1 : 0);
     }
 
     public static final Parcelable.Creator<ApplicationInfo> CREATOR
@@ -662,6 +670,7 @@ public class ApplicationInfo extends PackageItemInfo implements Parcelable {
         backupAgentName = source.readString();
         descriptionRes = source.readInt();
         uiOptions = source.readInt();
+        protect = source.readInt() != 0;
     }
 
     /**

@@ -646,4 +646,9 @@ public class MockPackageManager extends PackageManager {
     public VerifierDeviceIdentity getVerifierDeviceIdentity() {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public void setComponentProtectedSetting(ComponentName componentName, boolean newState) {
+        throw new UnsupportedOperationException();
+    }
 }
