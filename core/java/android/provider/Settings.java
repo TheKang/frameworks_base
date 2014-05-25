@@ -3671,12 +3671,6 @@ public final class Settings {
         public static final String LOCKSCREEN_ROTATION_ENABLED = "lockscreen_rotation_enabled";
 
         /**
-         * Set the timeout of peek when pikcing up the device
-         * @hide
-         */
-        public static final String PEEK_PICKUP_TIMEOUT = "peek_pickup_timeout";
-
-        /**
          * Enables/disables lockscreen notifications
          * @hide
          */
@@ -4027,14 +4021,6 @@ public final class Settings {
          * @hide
          */
         public static final String RECENT_PANEL_EXPANDED_MODE = "recent_panel_expanded_mode";
-
-        /**
-         * Either if notification peek is enabled of disabled
-         * 0 = disabled (default)
-         * 1 = enabled
-         * @hide
-         */
-        public static final String PEEK_STATE = "peek_state";
 
         /**
          * Automatically unhide status bar temporarily in fullscreen on new notifications

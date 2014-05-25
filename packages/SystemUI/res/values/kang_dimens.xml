@@ -14,15 +14,6 @@
      limitations under the License.
 -->
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Notification peek dimens -->
-    <dimen name="item_padding">5dp</dimen>
-    <dimen name="small_notification_icon_size">30dp</dimen>
-    <dimen name="small_notification_icon_padding">2dp</dimen>
-    <dimen name="notification_icon_size">46dp</dimen>
-    <dimen name="notification_text_width">300dp</dimen>
-    <dimen name="clock_padding">10dp</dimen>
-    <dimen name="clock_size">15dp</dimen>
-
     <!-- Quick Settings tile geometry: width and height (ribbon mode) -->
     <dimen name="qs_ribbon_width_min">40dp</dimen>
     <dimen name="qs_ribbon_width_max">128dp</dimen>
