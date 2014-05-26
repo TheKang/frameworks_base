@@ -4037,7 +4037,7 @@ public final class Settings {
         public static final String CUSTOM_RECENT = "custom_recent";
 
         /**
-         * Whether to show the network status in the status bar
+         * Whether to show the network stats in the status bar
          * @hide
          */
         public static final String STATUS_BAR_NETWORK_STATS = "status_bar_network_stats";
@@ -4047,6 +4047,12 @@ public final class Settings {
          * @hide
          */
         public static final String STATUS_BAR_NETWORK_STATS_UPDATE_INTERVAL = "status_bar_network_stats_update_interval";
+
+        /**
+         * Hide network stats when there is no traffic
+         * @hide
+         */
+        public static final String STATUS_BAR_NETWORK_STATS_HIDE = "status_bar_network_stats_hide";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
