@@ -125,6 +125,10 @@ public class SlimSeekBarPreference extends Preference
         mIsMilliSeconds = millis;
     }
 
+    public void setMax(int max) {
+        bar.setMax(max);
+    }
+
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
 
