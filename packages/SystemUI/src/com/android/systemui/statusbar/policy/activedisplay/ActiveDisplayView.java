@@ -1434,8 +1434,8 @@ public class ActiveDisplayView extends FrameLayout
                      mCurrentNotificationIcon.placeNumber(0, false);
                      mNotification = null;
                  }
-            });
-        }
+            }
+        });
     }
 
     private Drawable getIconDrawable(StatusBarNotification sbn) {
