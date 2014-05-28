@@ -57,6 +57,7 @@ public class ClockView extends RelativeLayout {
     private TextView mTimeView;
     private TextView mDateView;
     private AmPm mAmPm;
+    private boolean showAmPm = false;
     private SettingsObserver mSettingsObserver;
     private ContentObserver mFormatChangeObserver;
     private int mAttached = 0; // for debugging - tells us whether attach/detach is unbalanced

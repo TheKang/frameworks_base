@@ -78,6 +78,7 @@ public class Clock extends TextView implements DemoMode {
     protected int mClockDateStyle = CLOCK_DATE_STYLE_UPPERCASE;
     protected int mClockStyle = STYLE_CLOCK_RIGHT;
     protected boolean mShowClock;
+    protected boolean mShowClockStatusBar = true;
 
     private int mAmPmStyle;
 
