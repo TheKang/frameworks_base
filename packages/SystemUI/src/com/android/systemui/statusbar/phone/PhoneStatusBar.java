@@ -267,6 +267,7 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
     View mFlipSettingsView;
     QuickSettingsContainerView mSettingsContainer;
     int mSettingsPanelGravity;
+    private TilesChangedObserver mTilesChangedObserver;
 
     // Ribbon settings
     private boolean mHasQuickAccessSettings;
@@ -1428,6 +1429,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
                 mQS.setService(this);
                 mQS.setBar(mStatusBarView);
                 mQS.setupQuickSettings();
+                if (mTilesChangedObserver == null) {
+                    mTilesChangedObserver = new TilesChangedObserver(mHandler);
+                    mTilesChangedObserver.startObserving();
+                }
             } else {
                 mQS = null; // fly away, be free
             }
@@ -4236,7 +4241,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
         } else {
             // Update the QuickSettings container
-            if (mQS != null) mQS.updateResources();
+            if (mQS != null)
+                mQS.updateResources();
             if (mRibbonQS != null)
                 mRibbonQS.updateResources();
         }
