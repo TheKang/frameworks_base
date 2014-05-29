@@ -1433,12 +1433,10 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             }
 
             final ContentResolver resolver = mContext.getContentResolver();
-//            mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
-//                    Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
-//            mQuickAccessLayoutLinked = Settings.System.getIntForUser(resolver,
-//                    Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
-            mHasQuickAccessSettings = (1 == 1);
-            mQuickAccessLayoutLinked = (1 == 1);
+            mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
+                    Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
+            mQuickAccessLayoutLinked = Settings.System.getIntForUser(resolver,
+                    Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
             if (mHasQuickAccessSettings) {
                 cleanupRibbon();
                 mRibbonView = null;
@@ -4524,9 +4522,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             if (uri != null && uri.equals(Settings.System.getUriFor(
                     Settings.System.QS_QUICK_ACCESS))) {
                 final ContentResolver resolver = mContext.getContentResolver();
-//                mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
-//                        Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
-                mHasQuickAccessSettings = (1 == 1);
+                mHasQuickAccessSettings = Settings.System.getIntForUser(resolver,
+                        Settings.System.QS_QUICK_ACCESS, 0, UserHandle.USER_CURRENT) == 1;
                 if (mHasQuickAccessSettings) {
                     inflateRibbon();
                     mRibbonView.setVisibility(View.VISIBLE);
@@ -4540,9 +4537,8 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
             } else if (uri != null && uri.equals(Settings.System.getUriFor(
                     Settings.System.QS_QUICK_ACCESS_LINKED))) {
                 final ContentResolver resolver = mContext.getContentResolver();
-//                boolean layoutLinked = Settings.System.getIntForUser(resolver,
-//                        Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
-                boolean layoutLinked = (1 == 1);
+                boolean layoutLinked = Settings.System.getIntForUser(resolver,
+                        Settings.System.QS_QUICK_ACCESS_LINKED, 1, UserHandle.USER_CURRENT) == 1;
                 if (mQuickAccessLayoutLinked != layoutLinked) {
                     // Reload the ribbon
                     mQuickAccessLayoutLinked = layoutLinked;
