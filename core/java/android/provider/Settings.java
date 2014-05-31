@@ -4055,6 +4055,13 @@ public final class Settings {
         public static final String CUSTOM_RECENT = "custom_recent";
 
         /**
+         * Custom Recents: Show topmost task
+         *
+         * @hide
+         */
+        public static final String CUSTOM_RECENT_SHOW_TOPMOST = "custom_recent_show_topmost";
+
+        /**
          * Whether to show the network stats in the status bar
          * @hide
          */
