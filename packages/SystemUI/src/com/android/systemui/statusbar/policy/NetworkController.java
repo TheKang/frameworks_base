@@ -1281,7 +1281,7 @@ public class NetworkController extends BroadcastReceiver implements DemoMode {
         N = mEmergencyLabelViews.size();
         for (int i=0; i<N; i++) {
             TextView v = mEmergencyLabelViews.get(i);
-            if (!emergencyOnly) {
+            if (!emergencyOnly || mHideSignal) {
                 v.setVisibility(View.GONE);
             } else {
                 v.setText(mobileLabel); // comes from the telephony stack
