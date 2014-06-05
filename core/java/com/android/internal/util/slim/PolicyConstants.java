@@ -23,6 +23,7 @@ public class PolicyConstants {
     public static final String ACTION_SCREENSHOT = "**screenshot**";
     public static final String ACTION_AIRPLANE   = "**airplane**";
     public static final String ACTION_SOUND      = "**sound**";
+    public static final String ACTION_PROFILES   = "**profiles**";
     public static final String ACTION_EXPANDED_DESKTOP     = "**expanded_desktop**";
     public static final String ACTION_PIE                  = "**pie**";
     public static final String ACTION_NAVBAR               = "**nav_bar**";
@@ -37,6 +38,8 @@ public class PolicyConstants {
         + ACTION_REBOOT    + ACTION_DELIMITER
         + ICON_EMPTY       + ACTION_DELIMITER
         + ACTION_AIRPLANE  + ACTION_DELIMITER
+        + ICON_EMPTY       + ACTION_DELIMITER
+        + ACTION_PROFILES  + ACTION_DELIMITER
         + ICON_EMPTY       + ACTION_DELIMITER
         + ACTION_SOUND     + ACTION_DELIMITER
         + ICON_EMPTY       + ACTION_DELIMITER;
