@@ -659,12 +659,25 @@ public class RecentPanelView {
             // Never load the current home activity.
             if (isCurrentHomeActivity(intent.getComponent(), homeInfo)) {
                 loadOneExcluded = false;
+
+                if (i == 0) {
+                    //We're on Homescreen, so restore expanded state of last topmost task
+                    mTaskToRestore = mLastTopmostTask;
+                    mStateToRestore = mLastTopmostExpandedState;
+                }
+
                 continue;
             }
 
             // Don't load excluded activities.
             if (!loadOneExcluded && (recentInfo.baseIntent.getFlags()
                     & Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS) != 0) {
+
+                if (i == 0) {
+                    mTaskToRestore = mLastTopmostTask;
+                    mStateToRestore = mLastTopmostExpandedState;
+                }
+
                 continue;
             }
 
@@ -721,8 +734,9 @@ public class RecentPanelView {
                                 mLastTopmostExpandedState = oldState;
                             }
                             //now set the state of topmost task to collapsed
-                            item.setExpandedState(EXPANDED_STATE_COLLAPSED);
-                        } else if ((mTaskToRestore != null) && (item.identifier.equals(mTaskToRestore.identifier))) {
+                            oldState = EXPANDED_STATE_COLLAPSED;
+                        }
+                        if ((mTaskToRestore != null) && (item.identifier.equals(mTaskToRestore.identifier))) {
                             item.setExpandedState(mStateToRestore);
                             mTaskToRestore = null;
                         } else {
