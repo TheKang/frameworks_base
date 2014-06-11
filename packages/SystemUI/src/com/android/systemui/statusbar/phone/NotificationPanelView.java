@@ -173,10 +173,10 @@ public class NotificationPanelView extends PanelView {
                             && !mStatusBar.hasClearableNotifications()) {
                         flip = true;
                     } else if (quickPulldownMode == 1
-                            && mGestureStartX > getWidth() * (1.0f - STATUS_BAR_RIGHT_PERCENTAGE)) {
+                            && mGestureStartX > mStatusBar.getStatusBarView().getWidth() * (1.0f - STATUS_BAR_RIGHT_PERCENTAGE)) {
                         flip = true;
                     } else if (quickPulldownMode == 2
-                            && mGestureStartX < getWidth() * (1.0f - STATUS_BAR_LEFT_PERCENTAGE)) {
+                            && mGestureStartX < mStatusBar.getStatusBarView().getWidth() * (1.0f - STATUS_BAR_LEFT_PERCENTAGE)) {
                         flip = true;
                     }
                     break;
