@@ -289,11 +289,6 @@ public class NotificationViewManager {
         mPowerManager.wakeUp(SystemClock.uptimeMillis());
     }
 
-    private boolean isDisabledByProfiles() {
-        int isDisabled = mProfileManager.getActiveProfile().getDisableAD();
-        return (isDisabled == 1);
-    }
-
     public void onScreenTurnedOff() {
         mIsScreenOn = false;
         mWokenByPocketMode = false;
@@ -330,6 +325,11 @@ public class NotificationViewManager {
             return;
         String[] appsToExclude = excludedApps.split("\\|");
         mExcludedApps = new HashSet<String>(Arrays.asList(appsToExclude));
+    }
+
+    private boolean isDisabledByProfiles() {
+        int isDisabled = mProfileManager.getActiveProfile().getDisableAD();
+        return (isDisabled == 1);
     }
 
     private boolean inQuietHoursDim() {

@@ -176,9 +176,7 @@ public class KeyguardViewManager {
         mViewMediatorCallback = callback;
         mLockPatternUtils = lockPatternUtils;
 
-        SettingsObserver observer = new SettingsObserver(new Handler());
-        observer.observe();
-
+        new SettingsObserver(new Handler()).observe();
         updateSettings();
     }
 
