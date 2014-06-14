@@ -4322,12 +4322,19 @@ public final class Settings {
         public static final String ON_THE_GO_SERVICE_RESTART = "on_the_go_service_restart";
 
         /**
-         * Hover, default is 0 (off).
+         * Enable Hover, default is 0 (off).
+         *
+         * @hide
+         */
+        public static final String HOVER_ENABLED = "hover_enabled";
+
+        /**
+         * Hover is active, default is 0 (off).
          * 0 = disabled
          * 1 = enabled
          * @hide
          */
-        public static final String HOVER_STATE = "hover_state";
+        public static final String HOVER_ACTIVE = "hover_active";
 
         /**
          * Hover: Exclude non-clearable notifications, default is 0 (off).
