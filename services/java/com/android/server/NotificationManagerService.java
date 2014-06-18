@@ -77,7 +77,10 @@ import android.util.Slog;
 import android.util.Xml;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
+import android.view.IWindowManager;
+import android.view.View;
 import android.widget.Toast;
+import android.view.WindowManagerGlobal;
 
 import com.android.internal.R;
 
@@ -226,6 +229,8 @@ public class NotificationManagerService extends INotificationManager.Stub
     private static final String HOVER_POLICY = "hover_policy.xml";
 
     private final ArrayList<NotificationScorer> mScorers = new ArrayList<NotificationScorer>();
+
+    private IWindowManager mWindowManagerService;
 
     private class NotificationListenerInfo implements DeathRecipient {
         INotificationListener listener;
@@ -1322,6 +1327,24 @@ public class NotificationManagerService extends INotificationManager.Stub
         }
     };
 
+    private boolean enableScreenOnNotificationLed() {
+        int ScreenOnNotificationLedMode = Settings.System.getInt(mContext.getContentResolver(),
+                Settings.System.SCREEN_ON_NOTIFICATION_LED, 1);
+        int vis = 0;
+        try {
+            vis = mWindowManagerService.getSystemUIVisibility();
+        } catch (android.os.RemoteException ex) {
+        }
+        final boolean isStatusBarVisible = (vis & View.SYSTEM_UI_FLAG_FULLSCREEN) == 0
+                || (vis & View.STATUS_BAR_TRANSIENT) != 0;
+
+        if (((ScreenOnNotificationLedMode == 2) && !isStatusBarVisible)
+                || (ScreenOnNotificationLedMode == 1)) {
+            return true;
+        }
+        return false;
+    }
+
     private BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -1331,9 +1354,6 @@ public class NotificationManagerService extends INotificationManager.Stub
             boolean queryRemove = false;
             boolean packageChanged = false;
             boolean cancelNotifications = true;
-
-            boolean ScreenOnNotificationLed = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
 
             if (action.equals(Intent.ACTION_PACKAGE_ADDED)
                     || (queryRemove=action.equals(Intent.ACTION_PACKAGE_REMOVED))
@@ -1417,7 +1437,7 @@ public class NotificationManagerService extends INotificationManager.Stub
                 if (userHandle >= 0) {
                     cancelAllNotificationsInt(null, 0, 0, true, userHandle);
                 }
-            } else if (action.equals(Intent.ACTION_USER_PRESENT) && !ScreenOnNotificationLed) {
+            } else if (action.equals(Intent.ACTION_USER_PRESENT) && !enableScreenOnNotificationLed()) {
                 // turn off LED when user passes through lock screen
                 mNotificationLight.turnOff();
             } else if (action.equals(Intent.ACTION_USER_SWITCHED)) {
@@ -1558,6 +1578,8 @@ public class NotificationManagerService extends INotificationManager.Stub
 
         mNotificationLight = lights.getLight(LightsService.LIGHT_ID_NOTIFICATIONS);
         mAttentionLight = lights.getLight(LightsService.LIGHT_ID_ATTENTION);
+
+        mWindowManagerService = WindowManagerGlobal.getWindowManagerService();
 
         Resources resources = mContext.getResources();
         mDefaultNotificationColor = resources.getColor(
@@ -2529,9 +2551,6 @@ public class NotificationManagerService extends INotificationManager.Stub
     // lock on mNotificationList
     private void updateLightsLocked()
     {
-        boolean ScreenOnNotificationLed = Settings.System.getInt(mContext.getContentResolver(),
-                Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
-
         // handle notification lights
         if (mLedNotification == null) {
             // get next notification, if any
@@ -2543,7 +2562,7 @@ public class NotificationManagerService extends INotificationManager.Stub
 
         // Don't flash while we are in a call, screen is
         // on or we are in quiet hours with light dimmed
-        if (mLedNotification == null || mInCall || (mScreenOn && (!ScreenOnNotificationLed))
+        if (mLedNotification == null || mInCall || (mScreenOn && (!enableScreenOnNotificationLed()))
                 || (QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM))) {
             mNotificationLight.turnOff();
         } else if (mNotificationPulseEnabled) {
