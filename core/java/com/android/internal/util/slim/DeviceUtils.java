@@ -119,7 +119,7 @@ public class DeviceUtils {
         } else if (fileExists("/sys/devices/platform/htc_battery/fast_charge")) {
             return "/sys/devices/platform/htc_battery/fast_charge";
         } else {
-            return null;
+            return "";
         }
     }
 
