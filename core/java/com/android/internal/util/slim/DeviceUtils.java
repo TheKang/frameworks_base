@@ -103,15 +103,34 @@ public class DeviceUtils {
         return false;
     }
 
-    public static boolean deviceSupportsFastCharge(Context context) {
+    public static boolean fileExists(String file) {
+        return new File(file).exists();
+    }
+
+    public static String getFastChargePath(Context context) {
         String fchargePath = context.getResources()
-                    .getString(com.android.internal.R.string.config_fastChargePath);
-            if (!fchargePath.isEmpty()) {
-                File fastcharge = new File(fchargePath);
-                if (fastcharge.exists() && fastcharge.canWrite()) {
-                    return true;
-                }
+                .getString(com.android.internal.R.string.config_fastChargePath);
+        if (fileExists(fchargePath)) {
+            return fchargePath;
+        } else if (fileExists("/sys/kernel/fast_charge/force_fast_charge")) {
+            return "/sys/kernel/fast_charge/force_fast_charge";
+        } else if (fileExists("/sys/module/msm_otg/parameters/fast_charge")) {
+            return "/sys/module/msm_otg/parameters/fast_charge";
+        } else if (fileExists("/sys/devices/platform/htc_battery/fast_charge")) {
+            return "/sys/devices/platform/htc_battery/fast_charge";
+        } else {
+            return null;
+        }
+    }
+
+    public static boolean deviceSupportsFastCharge(Context context) {
+        String fchargePath = getFastChargePath(context);
+        if (!fchargePath.isEmpty()) {
+            File fastcharge = new File(fchargePath);
+            if (fastcharge.exists() && fastcharge.canWrite()) {
+                return true;
             }
+        }
         return false;
     }
 

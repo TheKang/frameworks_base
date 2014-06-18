@@ -22,6 +22,7 @@ import android.os.Message;
 import android.util.Log;
 import android.view.View;
 
+import com.android.internal.util.slim.DeviceUtils;
 import com.android.systemui.R;
 import com.android.systemui.statusbar.phone.QuickSettingsController;
 
@@ -52,8 +53,7 @@ public class FChargeTile extends QuickSettingsTile {
 
     public FChargeTile(Context context, final QuickSettingsController qsc) {
         super(context, qsc);
-        mFchargePath = mContext.getResources()
-                                .getString(com.android.internal.R.string.config_fastChargePath);
+        mFchargePath = DeviceUtils.getFastChargePath(context);
         mEnabled = isFastChargeOn();
         mObserver = new FileObserver(mFchargePath, FileObserver.MODIFY) {
             @Override
