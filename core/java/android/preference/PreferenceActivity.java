@@ -527,7 +527,9 @@ public abstract class PreferenceActivity extends ListActivity implements
 
         mListFooter = (FrameLayout)findViewById(com.android.internal.R.id.list_footer);
         mPrefsContainer = (ViewGroup) findViewById(com.android.internal.R.id.prefs_frame);
-        boolean hidingHeaders = onIsHidingHeaders();
+
+        boolean multiPane = onIsMultiPane();
+        boolean hidingHeaders = onIsHidingHeaders() && !multiPane;
         mSinglePane = hidingHeaders || !onIsMultiPane();
         String initialFragment = getIntent().getStringExtra(EXTRA_SHOW_FRAGMENT);
         Bundle initialArguments = getIntent().getBundleExtra(EXTRA_SHOW_FRAGMENT_ARGUMENTS);
