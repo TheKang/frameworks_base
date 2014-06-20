@@ -183,4 +183,10 @@
 
     <!-- Default for Settings.Global.TETHER_DUN_REQUIRED -->
     <integer name="def_tether_dun_required">0</integer>
+
+    <!-- Default DnD values of Settings.System.HEADS_UP_NOTIFICATION -->
+    <string name="def_heads_up_notification_dnd_values"></string>
+
+    <!-- Default Blacklist values of Settings.System.HEADS_UP_NOTIFICATION -->
+    <string name="def_heads_up_notification_blacklist_values"></string>
 </resources>
