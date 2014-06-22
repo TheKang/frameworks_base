@@ -52,6 +52,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.internal.widget.SizeAdaptiveLayout;
+
 import com.android.systemui.R;
 import com.android.systemui.statusbar.BaseStatusBar;
 import com.android.systemui.statusbar.BaseStatusBar.NotificationClicker;
@@ -60,6 +61,7 @@ import com.android.systemui.statusbar.NotificationData.Entry;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+
 import java.util.List;
 
 /**

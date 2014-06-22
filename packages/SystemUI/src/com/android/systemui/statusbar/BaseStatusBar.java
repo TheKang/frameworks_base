@@ -103,6 +103,8 @@ import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.activedisplay.ActiveDisplayView;
 import com.android.systemui.statusbar.policy.PieController;
+import com.android.systemui.statusbar.AppSidebar;
+import com.android.systemui.slimrecent.RecentController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -378,7 +380,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         mHoverCling = new HoverCling(mContext);
         mNotificationHelper = new NotificationHelper(this, mContext);
 
-        mHover.setNotificationHelper(mNotificationHelper);
+        mNotificationHelper = new NotificationHelper(this, mContext);
 
         mStatusBarContainer = new FrameLayout(mContext);
 
@@ -1459,7 +1461,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                     } else {
                         if (DEBUG) Log.d(TAG, "updating the current heads up:" + notification);
                         mInterruptingNotificationEntry.notification = notification;
-                        updateNotificationViews(mInterruptingNotificationEntry, notification);
+                        updateNotificationViews(mInterruptingNotificationEntry, notification, true);
                     }
                 }
 
@@ -1533,6 +1535,11 @@ public abstract class BaseStatusBar extends SystemUI implements
 
     private void updateNotificationViews(NotificationData.Entry entry,
             StatusBarNotification notification) {
+        updateNotificationViews(entry, notification, false);
+    }
+
+    private void updateNotificationViews(NotificationData.Entry entry,
+            StatusBarNotification notification, boolean headsUp) {
         final RemoteViews contentView = notification.getNotification().contentView;
         final RemoteViews bigContentView = notification.getNotification().bigContentView;
         // Reapply the RemoteViews
@@ -1543,8 +1550,8 @@ public abstract class BaseStatusBar extends SystemUI implements
         // update the contentIntent
         final PendingIntent contentIntent = notification.getNotification().contentIntent;
         if (contentIntent != null) {
-            final View.OnClickListener listener = makeClicker(contentIntent,
-                    notification.getPackageName(), notification.getTag(), notification.getId());
+            final View.OnClickListener listener =
+                    mNotificationHelper.getNotificationClickListener(entry, headsUp);
             entry.content.setOnClickListener(listener);
         } else {
             entry.content.setOnClickListener(null);
