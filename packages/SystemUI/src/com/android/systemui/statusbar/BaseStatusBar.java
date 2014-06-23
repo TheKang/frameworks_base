@@ -178,6 +178,14 @@ public abstract class BaseStatusBar extends SystemUI implements
     public View mFullscreenView;
     public boolean mStatusBarAutoUnhide = false;
     public boolean mStatusBarHidden = false;
+
+    private Runnable mPanelCollapseRunnable = new Runnable() {
+        @Override
+        public void run() {
+            animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
+        }
+    };
+
     /**
      * An interface for navigation key bars to allow status bars to signal which keys are
      * currently of interest to the user.<br>
@@ -652,6 +660,7 @@ public abstract class BaseStatusBar extends SystemUI implements
                 mNotificationBlamePopup.getMenuInflater().inflate(
                         R.menu.notification_popup_menu,
                         mNotificationBlamePopup.getMenu());
+
                 MenuItem hideIconCheck = mNotificationBlamePopup.getMenu().findItem(R.id.notification_hide_icon_packages);
                 if(hideIconCheck != null) {
                     hideIconCheck.setChecked(isIconHiddenByUser(packageNameF));
@@ -717,8 +726,15 @@ public abstract class BaseStatusBar extends SystemUI implements
                                 // System is dead
                             }
                             if (allowed) {
+                                if (contentIntent == null) {
+                                    String text = mContext.getResources().getString(R.string.status_bar_floating_no_interface);
+                                    int duration = Toast.LENGTH_SHORT;
+                                    animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
+                                    Toast.makeText(mContext, text, duration).show();
+                                } else {
                                 launchFloating(contentIntent);
                                 animateCollapsePanels(CommandQueue.FLAG_EXCLUDE_NONE);
+                                }
                             } else {
                                 String text = mContext.getResources().getString(R.string.floating_mode_blacklisted_app);
                                 int duration = Toast.LENGTH_LONG;
@@ -729,6 +745,12 @@ public abstract class BaseStatusBar extends SystemUI implements
                             return false;
                         }
                         return true;
+                    }
+                });
+                mNotificationBlamePopup.setOnDismissListener(new PopupMenu.OnDismissListener() {
+                    @Override
+                    public void onDismiss(PopupMenu popupMenu) {
+                        mNotificationBlamePopup = null;
                     }
                 });
                 mNotificationBlamePopup.show();
@@ -1121,20 +1143,41 @@ public abstract class BaseStatusBar extends SystemUI implements
         return new NotificationClicker(intent, pkg, tag, id);
     }
 
+    public NotificationClicker makeClicker(Intent intent) {
+        return new NotificationClicker(intent);
+    }
     public class NotificationClicker implements View.OnClickListener {
-        private PendingIntent mIntent;
+        private KeyguardTouchDelegate mKeyguard;
+        private PendingIntent mPendingIntent;
+        private Intent mIntent;
         private String mPkg;
         private String mTag;
         private int mId;
+        private boolean mFloat;
 
         public NotificationClicker(PendingIntent intent, String pkg, String tag, int id) {
-            mIntent = intent;
+            this();
+            mPendingIntent = intent;
             mPkg = pkg;
             mTag = tag;
             mId = id;
         }
 
+        public NotificationClicker(Intent intent) {
+            this();
+            mIntent = intent;
+        }
+
+        public NotificationClicker() {
+            mKeyguard = KeyguardTouchDelegate.getInstance(mContext);
+        }
+
+        public void makeFloating(boolean floating) {
+            mFloat = floating;
+        }
+
         public void onClick(View v) {
+            if (mNotificationBlamePopup != null) return;
             try {
                 // The intent we are sending is for the application, which
                 // won't have permission to immediately start an activity after
@@ -1164,21 +1207,24 @@ public abstract class BaseStatusBar extends SystemUI implements
                 overlay.setSourceBounds(
                         new Rect(pos[0], pos[1], pos[0]+v.getWidth(), pos[1]+v.getHeight()));
                 try {
-                    mIntent.send(mContext, 0, overlay);
+                    mPendingIntent.send(mContext, 0, overlay);
                 } catch (PendingIntent.CanceledException e) {
                     // the stack trace isn't very helpful here.  Just log the exception message.
                     Log.w(TAG, "Sending contentIntent failed: " + e);
                 }
-                KeyguardTouchDelegate.getInstance(mContext).dismiss();
             } else if(mIntent != null) {
                 if (mFloat && allowed) mIntent.addFlags(flags);
                 mContext.startActivity(mIntent);
             }
 
-            try {
-                mBarService.onNotificationClick(mPkg, mTag, mId);
-            } catch (RemoteException ex) {
-                // system process is dead if we're here.
+            if(mKeyguard.isShowingAndNotHidden()) mKeyguard.dismiss();
+
+            if(mPkg != null) { // check if we're dealing with a notification
+                try {
+                    mBarService.onNotificationClick(mPkg, mTag, mId);
+                } catch (RemoteException ex) {
+                    // system process is dead if we're here.
+                }
             }
 
             // close the shade if it was open
@@ -1271,6 +1317,9 @@ public abstract class BaseStatusBar extends SystemUI implements
     }
 
     protected void addNotificationViews(NotificationData.Entry entry) {
+        if (entry == null) {
+            return;
+        }
         // Add the expanded view and icon.
         int pos = mNotificationData.add(entry);
         if (DEBUG) {
@@ -1278,6 +1327,7 @@ public abstract class BaseStatusBar extends SystemUI implements
         }
         updateExpansionStates();
         updateNotificationIcons();
+        mHandler.removeCallbacks(mPanelCollapseRunnable);
 
         if (!mPowerManager.isScreenOn()) {
             mHover.addStatusBarNotification(entry.notification);
