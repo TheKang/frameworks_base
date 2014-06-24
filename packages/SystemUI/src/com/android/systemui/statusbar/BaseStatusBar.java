@@ -103,7 +103,6 @@ import com.android.systemui.statusbar.phone.PhoneStatusBar;
 import com.android.systemui.statusbar.policy.NotificationRowLayout;
 import com.android.systemui.statusbar.policy.activedisplay.ActiveDisplayView;
 import com.android.systemui.statusbar.policy.PieController;
-import com.android.systemui.statusbar.AppSidebar;
 import com.android.systemui.slimrecent.RecentController;
 
 import java.util.ArrayList;

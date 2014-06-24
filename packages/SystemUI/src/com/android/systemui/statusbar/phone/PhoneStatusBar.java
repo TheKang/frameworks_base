@@ -4321,11 +4321,11 @@ public class PhoneStatusBar extends BaseStatusBar implements DemoMode,
         }
 
         mHeadsUpNotificationDecay = Settings.System.getInt(
-                    resolver, Settings.System.HEADS_UP_TIMEOUT,
+                    mContext.getContentResolver(), Settings.System.HEADS_UP_TIMEOUT,
                     mContext.getResources().getInteger(R.integer.heads_up_notification_decay));
 
         mHeadsUpNotificationFSDecay = Settings.System.getInt(
-                    resolver, Settings.System.HEADS_UP_FS_TIMEOUT, 700);
+                    mContext.getContentResolver(), Settings.System.HEADS_UP_FS_TIMEOUT, 700);
     }
 
     private void resetUserSetupObserver() {
