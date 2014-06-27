@@ -58,7 +58,6 @@ import static com.android.internal.util.slim.QSConstants.TILE_REBOOT;
 import static com.android.internal.util.slim.QSConstants.TILE_FCHARGE;
 import static com.android.internal.util.slim.QSConstants.TILE_PROFILE;
 import static com.android.internal.util.slim.QSConstants.TILE_ONTHEGO;
-import static com.android.internal.util.slim.QSConstants.TILE_HOVER;
 import static com.android.internal.util.slim.QSConstants.TILE_CAMERA;
 
 import android.content.BroadcastReceiver;
@@ -122,7 +121,6 @@ import com.android.systemui.quicksettings.WifiAPTile;
 import com.android.systemui.quicksettings.RebootTile;
 import com.android.systemui.quicksettings.FChargeTile;
 import com.android.systemui.quicksettings.ProfileTile;
-import com.android.systemui.quicksettings.HoverTile;
 import com.android.systemui.statusbar.phone.QuickSettingsContainerView.QSSize;
 
 import java.util.ArrayList;
@@ -301,8 +299,6 @@ public class QuickSettingsController {
                 qs = new OnTheGoTile(mContext, this);
             } else if (tile.equals(TILE_COMPASS)) {
                 qs = new CompassTile(mContext, this);
-            } else if (tile.equals(TILE_HOVER)) {
-                qs = new HoverTile(mContext, this);
             } else if (tile.equals(TILE_CAMERA)) {
                 qs = new CameraTile(mContext, this, mHandler);
             }

@@ -186,7 +186,6 @@
 
     <!-- Default DnD values of Settings.System.HEADS_UP_NOTIFICATION -->
     <string name="def_heads_up_notification_dnd_values"></string>
-
     <!-- Default Blacklist values of Settings.System.HEADS_UP_NOTIFICATION -->
     <string name="def_heads_up_notification_blacklist_values"></string>
 </resources>

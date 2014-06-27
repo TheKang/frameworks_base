@@ -4333,56 +4333,6 @@ public final class Settings {
         public static final String ON_THE_GO_SERVICE_RESTART = "on_the_go_service_restart";
 
         /**
-         * Hover is active, default is 0 (off).
-         * 0 = disabled
-         * 1 = enabled
-         * @hide
-         */
-        public static final String HOVER_ACTIVE = "hover_active";
-
-        /**
-         * Hide HOVER-Button is StatusBar, default is 0 (off).
-         *
-         * @hide
-         */
-        public static final String HOVER_HIDE_BUTTON = "hover_hide_button";
-
-        /**
-         * Hover: Only show up if StatusBar is hidden, default is 1 (on).
-         *
-         * @hide
-         */
-        public static final String HOVER_REQUIRE_FULLSCREEN_MODE = "hover_require_fullscreen_mode";
-
-        /**
-         * Hover: Exclude non-clearable notifications, default is 0 (off).
-         *
-         * @hide
-         */
-        public static final String HOVER_EXCLUDE_NON_CLEARABLE = "hover_exclude_non_clearable";
-
-        /**
-         * Hover: Exclude low priority notifications, default is 0 (off).
-         *
-         * @hide
-         */
-        public static final String HOVER_EXCLUDE_LOW_PRIORITY = "hover_exclude_low_priority";
-
-        /**
-         * Hover: Option to exclude topmost app, default is 1 (on).
-         *
-         * @hide
-         */
-        public static final String HOVER_EXCLUDE_TOPMOST = "hover_exclude_topmost";
-
-        /**
-         * Hover: long fade out delay, default is 5000ms (5s).
-         *
-         * @hide
-         */
-        public static final String HOVER_LONG_FADE_OUT_DELAY = "hover_long_fade_out_delay";
-
-        /**
          * Animate-flip Quick Settings Panel Tiles on click
          *
          * @hide
@@ -6593,9 +6543,6 @@ public final class Settings {
 
         /** @hide */
         public static final String IMMERSIVE_MODE_CONFIRMATIONS = "immersive_mode_confirmations";
-
-        /** @hide */
-        public static final String HOVER_FIRST_TIME = "hover_first_time";
 
         /**
          * This is the query URI for finding a print service to install.

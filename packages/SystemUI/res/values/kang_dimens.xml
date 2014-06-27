@@ -62,8 +62,4 @@
     <dimen name="notification_large_icon_height">64dp</dimen>
     <dimen name="notification_subtext_size">12dp</dimen>
 
-    <!-- Hover dimens -->
-    <dimen name="hover_height">64dp</dimen>
-    <dimen name="hover_cling_width">-1px</dimen>
-    <dimen name="hover_tablet_width">478dp</dimen>
 </resources>
