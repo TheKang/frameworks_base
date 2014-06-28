@@ -101,6 +101,9 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private static final int KEY_IME_NAVIGATION_LEFT  = 2;
     private static final int KEY_IME_NAVIGATION_RIGHT = 3;
 
+    private static final int IME_NAVIGATION_UP_DOWN   = 0;
+    private static final int IME_NAVIGATION_HOME_END  = 1;
+
     private int mMenuVisibility;
     private int mMenuSetting;
 
@@ -115,6 +118,7 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
     private boolean mShowMenu;
     private boolean mIMENavigation;
     private boolean mIMECursorDisabled;
+    private int mIMECursorLongpressAction;
     private int mDisabledFlags = 0;
     private int mNavigationIconHints = 0;
 
@@ -289,6 +293,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
         mIMECursorDisabled = Settings.System.getIntForUser(mContext.getContentResolver(),
                 Settings.System.VOLUME_KEY_CURSOR_CONTROL, 0,
                 UserHandle.USER_CURRENT) > 0;
+
+        mIMECursorLongpressAction = Settings.System.getIntForUser(mContext.getContentResolver(),
+                Settings.System.IME_CURSOR_LONGPRESS_ACTION, 0,
+                UserHandle.USER_CURRENT);
     }
 
     private void watchForDevicePolicyChanges() {
@@ -650,7 +658,11 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
             d = mContext.getResources().getDrawable(R.drawable.ic_sysbar_menu);
         } else if (keyId == KEY_IME_NAVIGATION_LEFT) {
             v.setClickAction(ButtonsConstants.ACTION_IME_NAVIGATION_LEFT);
-            v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_UP);
+            if (mIMECursorLongpressAction == IME_NAVIGATION_UP_DOWN) {
+                v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_UP);
+            } else if (mIMECursorLongpressAction == IME_NAVIGATION_HOME_END) {
+                v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_HOME);
+            }
             v.setId(R.id.ime_navigation_left);
             v.setVisibility(View.GONE);
             v.setContentDescription(getResources().getString(
@@ -658,7 +670,11 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
             d = mContext.getResources().getDrawable(R.drawable.ic_sysbar_ime_navigation_left);
         } else {
             v.setClickAction(ButtonsConstants.ACTION_IME_NAVIGATION_RIGHT);
-            v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_DOWN);
+            if (mIMECursorLongpressAction == IME_NAVIGATION_UP_DOWN) {
+                v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_DOWN);
+            } else if (mIMECursorLongpressAction == IME_NAVIGATION_HOME_END) {
+                v.setLongpressAction(ButtonsConstants.ACTION_IME_NAVIGATION_END);
+            }
             v.setId(R.id.ime_navigation_right);
             v.setVisibility(View.GONE);
             v.setContentDescription(getResources().getString(
@@ -1065,6 +1081,10 @@ public class NavigationBarView extends LinearLayout implements BaseStatusBar.Nav
 
     public void setNavigationBarDisableIMECursor(boolean disabled) {
         mIMECursorDisabled = disabled;
+    }
+
+    public void setNavigationBarIMECursorLongpressAction(int newValue) {
+        mIMECursorLongpressAction = newValue;
     }
 
     public void reorient() {
