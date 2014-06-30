@@ -43,8 +43,6 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import com.android.internal.util.slim.QuietHoursHelper;
-
 public class NotificationViewManager {
     private final static String TAG = "Keyguard:NotificationViewManager";
 
@@ -172,7 +170,7 @@ public class NotificationViewManager {
                     if (event.values[0] >= ProximitySensor.getMaximumRange()) {
                         if (config.pocketMode && mTimeCovered != 0 && (config.showAlways || mHostView.getNotificationCount() > 0)
                                 && System.currentTimeMillis() - mTimeCovered > MIN_TIME_COVERED
-                                && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
+                                && !inQuietHoursDim()
                                 && !isDisabledByProfiles()) {
                             wakeDevice();
                             mWokenByPocketMode = true;
@@ -202,7 +200,7 @@ public class NotificationViewManager {
                     config.forceExpandedView);
             if ( added && config.wakeOnNotification && screenOffAndNotCovered
                         && showNotification && mTimeCovered == 0
-                        && !QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
+                        && !inQuietHoursDim()
                         && !isDisabledByProfiles()) {
                 wakeDevice();
                 mHostView.showAllNotifications();
@@ -332,5 +330,10 @@ public class NotificationViewManager {
             return;
         String[] appsToExclude = excludedApps.split("\\|");
         mExcludedApps = new HashSet<String>(Arrays.asList(appsToExclude));
+    }
+
+    private boolean inQuietHoursDim() {
+        return Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.QUIET_HOURS_DIM,
+                0, UserHandle.USER_CURRENT_OR_SELF) == 2;
     }
 }
