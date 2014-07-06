@@ -18,9 +18,8 @@
 -->
 
 <resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
-    <!-- Don't use roaming icon for considered operators -->
+    <!-- Virgin Mobile: Don't use roaming icon for Movistar -->
     <string-array translatable="false" name="config_operatorConsideredNonRoaming">
-        <item>23203</item>
-	<item>23205</item>
+        <item>73002</item>
     </string-array>
 </resources>
