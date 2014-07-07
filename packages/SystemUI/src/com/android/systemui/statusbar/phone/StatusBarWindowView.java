@@ -86,7 +86,6 @@ public class StatusBarWindowView extends FrameLayout
         case KeyEvent.KEYCODE_BACK:
             if (!down) {
                 mService.animateCollapsePanels();
-                mService.hideHeadsUp();
             }
             return true;
         }

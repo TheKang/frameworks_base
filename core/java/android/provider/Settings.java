@@ -4427,48 +4427,6 @@ public final class Settings {
         public static final String POWER_MENU_USER_ENABLED = "power_menu_user_enabled";
 
         /**
-         * Heads Up Notifications
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_NOTIFICATION = "heads_up_enabled";
-
-        /**
-         * Which applications to disable heads up notifications in
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_CUSTOM_VALUES = "heads_up_custom_values";
-
-        /**
-         * Which applications to disable heads up notifications for
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_BLACKLIST_VALUES = "heads_up_blacklist_values";
-
-        /**
-         * Heads Up Timeout
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_TIMEOUT = "heads_up_timeout";
-
-        /**
-         * Heads Up Fullscreen Timeout
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_FS_TIMEOUT = "heads_up_fs_timeout";
-
-        /**
-         * Heads Up in Floating Window
-         *
-         * @hide
-         */
-        public static final String HEADS_UP_FLOATING_WINDOW = "heads_up_floating_window";
-
-        /**
          * Disable ads (HFM)
          *
          * @hide
