@@ -59,9 +59,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
     private boolean mHeadsUpIsExpanded;
     private boolean mSnoozeButtonVisibility;
 
-    // Notification helper
-    protected NotificationHelper mNotificationHelper;
-
     public HeadsUpNotificationView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
@@ -81,10 +78,6 @@ public class HeadsUpNotificationView extends FrameLayout implements SwipeHelper.
         if (mSnoozeButton != null) {
             mSnoozeButton.setVisibility(show ? View.VISIBLE : View.GONE);
         }
-    }
-
-    public void setNotificationHelper(NotificationHelper notificationHelper) {
-        mNotificationHelper = notificationHelper;
     }
 
     public ViewGroup getHolder() {
