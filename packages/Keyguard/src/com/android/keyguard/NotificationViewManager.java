@@ -43,6 +43,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.android.internal.util.slim.QuietHoursHelper;
+
 public class NotificationViewManager {
     private final static String TAG = "Keyguard:NotificationViewManager";
 
@@ -214,7 +216,6 @@ public class NotificationViewManager {
         public boolean isValidNotification(final StatusBarNotification sbn) {
             return (!mExcludedApps.contains(sbn.getPackageName()));
         }
-
     }
 
     public NotificationViewManager(Context context, KeyguardViewManager viewManager) {
@@ -333,7 +334,6 @@ public class NotificationViewManager {
     }
 
     private boolean inQuietHoursDim() {
-        return Settings.System.getIntForUser(mContext.getContentResolver(), Settings.System.QUIET_HOURS_DIM,
-                0, UserHandle.USER_CURRENT_OR_SELF) == 2;
+        return QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
     }
 }
