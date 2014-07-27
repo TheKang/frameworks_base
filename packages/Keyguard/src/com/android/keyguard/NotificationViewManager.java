@@ -334,6 +334,6 @@ public class NotificationViewManager {
     }
 
     private boolean inQuietHoursDim() {
-        return QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM)
+        return QuietHoursHelper.inQuietHours(mContext, Settings.System.QUIET_HOURS_DIM);
     }
 }
