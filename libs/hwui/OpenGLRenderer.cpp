@@ -388,6 +388,8 @@ void OpenGLRenderer::resume() {
     glEnable(GL_BLEND);
     glBlendFunc(mCaches.lastSrcMode, mCaches.lastDstMode);
     glBlendEquation(GL_FUNC_ADD);
+
+    glStencilMask(0xff);
 }
 
 void OpenGLRenderer::resumeAfterLayer() {
@@ -2057,7 +2059,9 @@ status_t OpenGLRenderer::drawDisplayList(DisplayList* displayList, Rect& dirty,
         return status | deferredList.flush(*this, dirty);
     }
 
-    return DrawGlInfo::kStatusDone;
+    // Even if there is no drawing command(Ex: invisible),
+    // it still needs startFrame to clear buffer and start tiling.
+    return startFrame();
 }
 
 void OpenGLRenderer::outputDisplayList(DisplayList* displayList) {
