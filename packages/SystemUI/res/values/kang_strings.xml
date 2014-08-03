@@ -60,4 +60,10 @@
     <string name="status_bar_recent_floating_item_title">Floating mode</string>
 
     <string name="status_bar_notification_spam_item_title">Block messages like these</string>
+
+    <string name="power_ac"> (AC)</string>
+    <string name="power_usb"> (USB)</string>
+    <string name="power_wireless"> (wireless)</string>
+    <string name="power_ac_usb"> (AC+USB)</string>
+
 </resources>
