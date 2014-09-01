@@ -2113,6 +2113,13 @@ public final class Settings {
         public static final int VOLUME_OVERLAY_NONE = 3;
 
         /**
+         * Volume panel background color
+         *
+         * @hide
+         */
+        public static final String VOLUME_PANEL_BG_COLOR = "volume_panel_bg_color";
+
+        /**
          * Whether the torch will pulse on incoming call
          * @hide
          */
@@ -4514,6 +4521,13 @@ public final class Settings {
          * @hide
          */
         public static final String PROXIMITY_ON_WAKE = "proximity_on_wake";
+
+        /**
+         * Recent panel background color
+         *
+         * @hide
+         */
+        public static final String RECENT_PANEL_BG_COLOR = "recent_panel_bg_color";
 
         /**
          * Recent panel background color

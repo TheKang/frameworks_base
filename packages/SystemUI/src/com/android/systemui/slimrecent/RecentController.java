@@ -271,7 +271,13 @@ public class RecentController implements RecentPanelView.OnExitListener,
         if (mRecentPanelView != null) {
             mRecentPanelView.setMainGravity(mMainGravity);
         }
-        defaultBackground = mContext.getResources().getDrawable(R.drawable.recent_bg_dropshadow).getCurrent();
+        if (mMainGravity == Gravity.LEFT) {
+            defaultBackground = mContext.getResources().getDrawable(
+                R.drawable.recent_bg_dropshadow_left).getCurrent();
+        } else {
+            defaultBackground = mContext.getResources().getDrawable(
+                R.drawable.recent_bg_dropshadow).getCurrent();
+        }
         if (mRecentContent != null) {
             if (mPanelColor != 0x00ffffff) {
                 mRecentContent.setBackgroundColor(mPanelColor);
@@ -575,7 +581,13 @@ public class RecentController implements RecentPanelView.OnExitListener,
             }
 
             // Update colors in RecentPanelView
-            defaultBackground = mContext.getResources().getDrawable(R.drawable.recent_bg_dropshadow).getCurrent();
+            if (mMainGravity == Gravity.LEFT) {
+                defaultBackground = mContext.getResources().getDrawable(
+                    R.drawable.recent_bg_dropshadow_left).getCurrent();
+            } else {
+                defaultBackground = mContext.getResources().getDrawable(
+                    R.drawable.recent_bg_dropshadow).getCurrent();
+            }
 
             mPanelColor = Settings.System.getIntForUser(resolver,
                     Settings.System.RECENT_PANEL_BG_COLOR, -2, UserHandle.USER_CURRENT);
