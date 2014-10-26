@@ -32,8 +32,12 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/notifications/ogg/Talitha.ogg:system/media/audio/notifications/Talitha.ogg \
     $(LOCAL_PATH)/notifications/ogg/Tejat.ogg:system/media/audio/notifications/Tejat.ogg \
     $(LOCAL_PATH)/notifications/ogg/Syrma.ogg:system/media/audio/notifications/Syrma.ogg \
+    $(LOCAL_PATH)/notifications/moonbeam.ogg:system/media/audio/notifications/moonbeam.ogg \
+    $(LOCAL_PATH)/newwavelabs/OnTheHunt.ogg:system/media/audio/notifications/OnTheHunt.ogg \
+    $(LOCAL_PATH)/notifications/ogg/Mira.ogg:system/media/audio/notifications/Mira.ogg \
     $(LOCAL_PATH)/notifications/ogg/Ariel_48k.ogg:system/media/audio/notifications/Ariel.ogg \
     $(LOCAL_PATH)/notifications/ogg/Ceres_48k.ogg:system/media/audio/notifications/Ceres.ogg \
+    $(LOCAL_PATH)/notifications/ogg/Antares.ogg:system/media/audio/notifications/Antares.ogg \
     $(LOCAL_PATH)/notifications/ogg/Carme_48k.ogg:system/media/audio/notifications/Carme.ogg \
     $(LOCAL_PATH)/notifications/ogg/Elara_48k.ogg:system/media/audio/notifications/Elara.ogg \
     $(LOCAL_PATH)/notifications/ogg/Europa_48k.ogg:system/media/audio/notifications/Europa.ogg \
@@ -55,6 +59,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/ringtones/ogg/Sedna_48k.ogg:system/media/audio/ringtones/Sedna.ogg \
     $(LOCAL_PATH)/ringtones/ogg/Triton_48k.ogg:system/media/audio/ringtones/Triton.ogg \
     $(LOCAL_PATH)/ringtones/ogg/Umbriel_48k.ogg:system/media/audio/ringtones/Umbriel.ogg \
+    $(LOCAL_PATH)/ringtones/Machina.ogg:system/media/audio/ringtones/Machina.ogg \
+    $(LOCAL_PATH)/ringtones/Scarabaeus.ogg:system/media/audio/ringtones/Scarabaeus.ogg \
     $(LOCAL_PATH)/effects/ogg/Dock.ogg:system/media/audio/ui/Dock.ogg \
     $(LOCAL_PATH)/effects/ogg/Effect_Tick_48k.ogg:system/media/audio/ui/Effect_Tick.ogg \
     $(LOCAL_PATH)/effects/ogg/KeypressDelete_120_48k.ogg:system/media/audio/ui/KeypressDelete.ogg \

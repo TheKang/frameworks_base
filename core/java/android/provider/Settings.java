@@ -3669,6 +3669,18 @@ public final class Settings {
         public static final String HEADS_UP_SHOW_UPDATE = "heads_up_show_update";
 
         /**
+         * Heads Up background color
+         * @hide
+         */
+        public static final String HEADS_UP_BG_COLOR = "heads_up_bg_color";
+
+        /**
+         * Heads Up text color
+         * @hide
+         */
+        public static final String HEADS_UP_TEXT_COLOR = "heads_up_text_color";
+
+        /**
          * Sensitivity of all system shake events
          * @hide
          */
@@ -3830,6 +3842,12 @@ public final class Settings {
          * @hide
          */
         public static final String QUIET_HOURS_HAPTIC = "quiet_hours_haptic";
+
+        /**
+         * @hide
+         */
+        public static final String PROXIMITY_ON_WAKE = "proximity_on_wake";
+
 
         /**
          * Whether to disable system sounds during quiet hours.
@@ -4535,6 +4553,20 @@ public final class Settings {
          * @hide
          */
         public static final String RECENT_PANEL_BG_COLOR = "recent_panel_bg_color";
+
+        /**
+         * Recent card background color
+         *
+         * @hide
+         */
+        public static final String RECENT_CARD_BG_COLOR = "recent_card_bg_color";
+
+        /**
+         * Recent card text color
+         *
+         * @hide
+         */
+        public static final String RECENT_CARD_TEXT_COLOR = "recent_card_text_color";
 
         /**
          * Settings to backup. This is here so that it's in the same place as the settings
