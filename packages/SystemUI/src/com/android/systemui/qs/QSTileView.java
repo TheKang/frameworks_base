@@ -60,6 +60,7 @@ public class QSTileView extends ViewGroup {
     private boolean mDual;
     private OnClickListener mClickPrimary;
     private OnClickListener mClickSecondary;
+    private OnLongClickListener mClickLong;
     private RippleDrawable mRipple;
 
     public QSTileView(Context context) {
@@ -179,6 +180,7 @@ public class QSTileView extends ViewGroup {
         }
         if (dual) {
             mTopBackgroundView.setOnClickListener(mClickPrimary);
+            mTopBackgroundView.setOnLongClickListener(mClickLong);
             setOnClickListener(null);
             setClickable(false);
             setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
@@ -187,6 +189,7 @@ public class QSTileView extends ViewGroup {
             mTopBackgroundView.setOnClickListener(null);
             mTopBackgroundView.setClickable(false);
             setOnClickListener(mClickPrimary);
+            setOnLongClickListener(mClickLong);
             setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
             setBackground(tileBackground);
         }
@@ -203,9 +206,10 @@ public class QSTileView extends ViewGroup {
         }
     }
 
-    public void init(OnClickListener clickPrimary, OnClickListener clickSecondary) {
+    public void init(OnClickListener clickPrimary, OnClickListener clickSecondary, OnLongClickListener clickLong) {
         mClickPrimary = clickPrimary;
         mClickSecondary = clickSecondary;
+        mClickLong = clickLong;
     }
 
     protected View createIcon() {
