@@ -156,16 +156,7 @@ public class DataTile extends QSTile<QSTile.BooleanState> {
     }
 
     public boolean hasIccCard() {
-        if (mTelephonyManager.isMultiSimEnabled()) {
-            int prfDataPhoneId = SubscriptionManager.getPhoneId(
-                    SubscriptionManager.getDefaultDataSubId());
-            int simState = mTelephonyManager.getSimState(prfDataPhoneId);
-            boolean active = (simState != TelephonyManager.SIM_STATE_ABSENT)
-                    && (simState != TelephonyManager.SIM_STATE_UNKNOWN);
-            return active && mTelephonyManager.hasIccCard(prfDataPhoneId);
-        } else {
-            return mTelephonyManager.hasIccCard();
-        }
+        return mTelephonyManager.hasIccCard();
     }
 
     public boolean dataSwitchEnabled() {
