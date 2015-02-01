@@ -265,12 +265,10 @@ public class WallpaperManagerService extends IWallpaperManager.Stub {
                     Slog.w(TAG, "Wallpaper service gone: " + mWallpaper.wallpaperComponent);
                     if (!mWallpaper.wallpaperUpdating
                             && mWallpaper.userId == mCurrentUserId) {
-                        // There is a race condition which causes
-                        // {@link #mWallpaper.wallpaperUpdating} to be false even if it is
-                        // currently updating since the broadcast notifying us is async.
-                        // This race is overcome by the general rule that we only reset the
-                        // wallpaper if its service was shut down twice
-                        // during {@link #MIN_WALLPAPER_CRASH_TIME} millis.
+                        if (mWallpaper.wallpaperComponent.equals(mImageWallpaper)) {
+                            Slog.w(TAG, "SystemUI wallpaper disconnected, assuming it's being restarted, not clearing wallpaper.");
+                            return;
+                        }
                         if (mWallpaper.lastDiedTime != 0
                                 && mWallpaper.lastDiedTime + MIN_WALLPAPER_CRASH_TIME
                                     > SystemClock.uptimeMillis()) {
