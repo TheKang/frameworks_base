@@ -713,9 +713,6 @@ public class NotificationManagerService extends SystemService {
             boolean packageChanged = false;
             boolean cancelNotifications = true;
 
-            boolean ScreenOnNotificationLed = Settings.System.getInt(getContext().getContentResolver(),
-                    Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
-
             if (action.equals(Intent.ACTION_PACKAGE_ADDED)
                     || (queryRemove=action.equals(Intent.ACTION_PACKAGE_REMOVED))
                     || action.equals(Intent.ACTION_PACKAGE_RESTARTED)
@@ -782,6 +779,9 @@ public class NotificationManagerService extends SystemService {
     private final BroadcastReceiver mIntentReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            boolean ScreenOnNotificationLed = Settings.System.getInt(getContext().getContentResolver(),
+                    Settings.System.SCREEN_ON_NOTIFICATION_LED, 1) == 1;
+
             String action = intent.getAction();
 
             if (action.equals(Intent.ACTION_SCREEN_ON)) {
