@@ -32,6 +32,7 @@ import android.os.Bundle;
 import android.os.RemoteException;
 import android.os.UserHandle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.telecom.TelecomManager;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -99,6 +100,15 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private final Interpolator mLinearOutSlowInInterpolator;
     private int mLastUnlockIconRes = 0;
 
+<<<<<<< HEAD
+=======
+    private boolean mLongClickToForceLock;
+    private boolean mLongClickToSleep;
+    private PowerManager mPm;
+
+    private boolean mDisableLockScreenShortcuts;
+
+>>>>>>> 2bb9930... Base: Option to disable phone & camera shortcuts on lock screen [1/2]
     public KeyguardBottomAreaView(Context context) {
         this(context, null);
     }
@@ -164,8 +174,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         mIndicationText = (TextView) findViewById(R.id.keyguard_indication_text);
         mEmergencyButton = (EmergencyButton) findViewById(R.id.emergency_call_button);
         watchForCameraPolicyChanges();
-        updateCameraVisibility();
-        updatePhoneVisibility();
+        updateVisibility();
         mUnlockMethodCache = UnlockMethodCache.getInstance(getContext());
         mUnlockMethodCache.addListener(this);
         updateLockIcon();
@@ -218,7 +227,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
 
     public void setPhoneStatusBar(PhoneStatusBar phoneStatusBar) {
         mPhoneStatusBar = phoneStatusBar;
-        updateCameraVisibility(); // in case onFinishInflate() was called too early
+        updateVisibility(); // in case onFinishInflate() was called too early
     }
 
     private Intent getCameraIntent() {
@@ -238,7 +247,8 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
                 PackageManager.MATCH_DEFAULT_ONLY,
                 mLockPatternUtils.getCurrentUser());
         boolean visible = !isCameraDisabledByDpm() && resolved != null
-                && getResources().getBoolean(R.bool.config_keyguardShowCameraAffordance);
+                && getResources().getBoolean(R.bool.config_keyguardShowCameraAffordance)
+                && !mDisableLockScreenShortcuts;
         mCameraImageView.setVisibility(visible ? View.VISIBLE : View.GONE);
     }
 
@@ -250,7 +260,15 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private boolean isPhoneVisible() {
         PackageManager pm = mContext.getPackageManager();
         return pm.hasSystemFeature(PackageManager.FEATURE_TELEPHONY)
-                && pm.resolveActivity(PHONE_INTENT, 0) != null;
+                && pm.resolveActivity(PHONE_INTENT, 0) != null
+                && !mDisableLockScreenShortcuts;
+    }
+
+    private void updateVisibility() {
+        mDisableLockScreenShortcuts = Settings.Secure.getIntForUser(getContext().getContentResolver(),
+                Settings.Secure.DISABLE_LOCK_SCREEN_SHORTCUTS, 0, UserHandle.USER_CURRENT) == 1;
+        updateCameraVisibility();
+        updatePhoneVisibility();
     }
 
     private boolean isCameraDisabledByDpm() {
@@ -369,7 +387,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
         }
         if (changedView == this && visibility == VISIBLE) {
             updateLockIcon();
-            updateCameraVisibility();
+            updateVisibility();
         }
     }
 
@@ -443,7 +461,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
 
     public void onMethodSecureChanged(boolean methodSecure) {
         updateLockIcon();
-        updateCameraVisibility();
+        updateVisibility();
     }
 
     public void onUnlockMethodStateChanged() {
@@ -503,7 +521,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
             post(new Runnable() {
                 @Override
                 public void run() {
-                    updateCameraVisibility();
+                    updateVisibility();
                 }
             });
         }
@@ -513,7 +531,7 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
             new KeyguardUpdateMonitorCallback() {
         @Override
         public void onUserSwitchComplete(int userId) {
-            updateCameraVisibility();
+            updateVisibility();
         }
 
         @Override
