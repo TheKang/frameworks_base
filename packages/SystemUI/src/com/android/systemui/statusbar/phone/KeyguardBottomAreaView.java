@@ -1,3 +1,4 @@
+
 /*
  * Copyright (C) 2014 The Android Open Source Project
  *
@@ -105,6 +106,8 @@ public class KeyguardBottomAreaView extends FrameLayout implements View.OnClickL
     private boolean mLongClickToForceLock;
     private boolean mLongClickToSleep;
     private PowerManager mPm;
+
+    private boolean mDisableLockScreenShortcuts;
 
     public KeyguardBottomAreaView(Context context) {
         this(context, null);

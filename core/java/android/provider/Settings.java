@@ -5047,6 +5047,12 @@ public final class Settings {
         public static final String LONG_PRESS_LOCK_ICON_TO_SLEEP = "long_press_lock_icon_to_sleep";
 
         /**
+         * Ability to disable the phone & camera shortcuts on lock screen
+         * @hide
+         */
+        public static final String DISABLE_LOCK_SCREEN_SHORTCUTS = "disable_lock_screen_shortcuts";
+
+        /**
          * Comma-separated list of location providers that activities may access. Do not rely on
          * this value being present in settings.db or on ContentObserver notifications on the
          * corresponding Uri.
